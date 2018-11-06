@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col">
+    <div widget class="card">
+      <div class="card-header">
+        <a (click)="aetenant.add()" style="cursor:pointer" title="{{ ('CRUD.ADD' | translate)}}" data-toggle="modal"><i class="fa fa-plus"></i> <strong>{{ ('CRUD.ADD' | translate)}}</strong>&nbsp;{{'LABELS.TENANT'| translate}}</a>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+        </div>
+      </div>
+
+      <div class="card-body widget-body">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <!--pageLimit and search datatable start-->
+            <div class="input-group input-group-sm">
+              <select name="ipp" id="ipp" class='form-control col-sm-4 col-md-2 col-lg-1' (change)="updatePageLimit(itemsPerPage.value)" [formControl]="itemsPerPage">
+              <option [value]="10">10</option>
+              <option [value]="20">20</option>
+              <option [value]="30">30</option>
+              <option [value]="40">40</option>
+            </select>
+              <div class="col-sm-4 col-md-7 col-lg-7"></div>
+              <span class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-search"></i>
+                </span>
+              </span>
+              <input type="search" class="form-control col-sm-4 col-md-4 col-lg-4" placeholder="{{ ('PLACE_HOLDERS.ENTER_NAME' | translate)}}" (keyup)="updateFilter($event)" />
+            </div>
+            <!--pageLimit and search datatable end-->
+            <!--Tenants datatable start-->
+            <ngx-datatable #table class="bootstrap" [rows]="rows" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [externalSorting]="true" [loadingIndicator]="loading" (sort)="onSort($event)" [externalPaging]="true" [count]="page.totalElements"
+              [offset]="page.pageNumber" [limit]="page.size" (page)="setPage($event)" [sorts]="[{prop: 'c_name', dir: 'asc'}]">
+              <ngx-datatable-column name="{{'TABLE_HEADERS.NAME'| translate}}" prop="c_name">
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                  {{value}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="userMail" name="{{'TABLE_HEADERS.USERNAME'| translate}}">
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                  {{value}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column headerClass="text-center" cellClass="text-center" [sortable]="false" name="{{'TABLE_HEADERS.ACTION'| translate}}">
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                  <button type="button" (click)="aetenant.edit(row)" data-toggle="modal" title="{{ ('CRUD.EDIT' | translate)}}" class="btn btn-warning btn-circle"><i class="fa fa-edit" aria-hidden="true"></i></button>&nbsp;
+                  <button type="button" (click)="dtenant.delete(row)" data-toggle="modal" data-target="#delete-modal" title="{{ ('CRUD.DELETE' | translate)}}" class="btn btn-danger btn-circle"><i class=" fa fa-trash-o" aria-hidden="true"></i></button>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+            <!--Tenants datatable end-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-add-edit-tenant #aetenant (refresh)="getTenantsData()"></app-add-edit-tenant>
+<app-delete-tenant #dtenant (refresh)="getTenantsData()"></app-delete-tenant>

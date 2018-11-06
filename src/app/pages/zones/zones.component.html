@@ -1,0 +1,137 @@
+<div class="row">
+     <div class="col">
+          <div widget class="card">
+               <div class="card-header">
+                    <a (click)="addZonePrompt()" style="cursor:pointer" title="Add" data-toggle="modal" data-target="#addZone-modal"><i
+                              class="fa fa-plus"></i> <strong>{{'CRUD.ADD' | translate}}</strong>&nbsp;{{'LABELS.ZONE'
+                         | translate}}</a>
+                    <div class="widget-controls">
+                         <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                         <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                         <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                         <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                         <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+               </div>
+               <!-- Add Zone Modal Popup Start-->
+               <div class="modal fade" id="addZone-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+                    data-backdrop="static" data-keyboard="true" style="z-index: 1051 !important;display: none;">
+                    <div class="modal-dialog" role="document" style="z-index: 100000;">
+                         <div class="modal-content">
+                              <div class="modal-header">
+                                   <h4 class="modal-title custom-font"><strong>{{Add_or_Edit}}</strong>&nbsp;{{'LABELS.ZONE'
+                                        | translate}}</h4>
+                                   <button class="close" data-dismiss="modal">&times;</button>
+                              </div>
+                              <div class="modal-body">
+                                   <form (ngSubmit)="addOrEditZone(zoneForm)" [formGroup]="zoneForm">
+                                        <div class="row">
+                                             <div class="form-group col-md-12" required>
+                                                  <label>{{'LABELS.NAME' | translate}}: </label>
+                                                  <input type="text" class="form-control checking-field"
+                                                       formControlName="zoneName" required placeholder="{{ ('PLACE_HOLDERS.ENTER_NAME' | translate) + ' ' +  ('PLACE_HOLDERS.MANDATORY' | translate)}}">
+                                                  <span class="help-block text-danger" *ngIf="zoneForm.get('zoneName').touched && zoneForm.get('zoneName').hasError('required')">{{'INFO.ENTER_NAME'
+                                                       | translate}}</span>
+                                             </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                             <button class="btn btn-success btn-sm" type="submit" [disabled]="!zoneForm.valid"><i
+                                                       class="fa fa-arrow-right"></i> {{Create_or_Update}}</button>
+                                        </div>
+                                   </form>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <!-- Add Zone Modal Popup End-->
+               <!--delete zone modal popup start-->
+               <div class="modal fade" id="deleteZone-Modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+                    data-backdrop="static" data-keyboard="true" style="display: none;">
+                    <div class="modal-dialog" role="document">
+                         <div class="modal-content">
+                              <div class="modal-header">
+                                   <h4 class="modal-title custom-font" id="modal-label"><strong>{{'CRUD.DELETE' |
+                                             translate}}</strong>&nbsp;{{'LABELS.ZONE' | translate}}</h4>
+                                   <button class="close" data-dismiss="modal">&times;</button>
+                              </div>
+                              <div class="modal-body text-center">
+                                   <p class="text-danger"><strong>{{'INFO.DELETE_ZONE' | translate}}</strong></p>
+                                   <span><strong>{{'LABELS.NAME' | translate}}: </strong> {{zoneNameToDelete}} </span><br>
+                              </div>
+                              <div class="modal-footer">
+                                   <button type="button" class="btn btn-success btn-sm" (click)="deleteZone()"><i class="fa fa-arrow-right"></i>
+                                        {{ 'CRUD.DELETE' | translate }}</button>
+                                   <!-- <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-arrow-left"></i> {{'BUTTONS.CANCEL' | translate}}</button> -->
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <!--delete zone modal popup end-->
+               <div class="card-body widget-body">
+                    <div class="row">
+                         <div class="col-lg-12 col-12">
+
+                              <!--pageLimit and search datatable start-->
+                              <div class="input-group input-group-sm">
+                                   <select name="ipp" id="ipp" class='form-control col-sm-4 col-md-2 col-lg-1' (change)="pageLimit(itemsPerPage.value)"
+                                        [formControl]="itemsPerPage">
+                                        <option [value]="10">10</option>
+                                        <option [value]="20">20</option>
+                                        <option [value]="30">30</option>
+                                        <option [value]="40">40</option>
+                                   </select>
+                                   <div class=" col-sm-4 col-md-7 col-lg-7"></div>
+                                   <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                   <input type="search" class="form-control col-sm-4 col-md-4 col-lg-4" placeholder="{{ ('PLACE_HOLDERS.ENTER_NAME' | translate)}}"
+                                        (keyup)="updateFilter($event)" />
+                              </div>
+                              <!--pageLimit and search datatable end-->
+
+                              <!--users datatable start-->
+                              <ngx-datatable #table class="bootstrap" [rows]="rows" [columnMode]="'force'"
+                                   [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [externalSorting]="true"
+                                   [loadingIndicator]="loading" (sort)="onSort($event)" (activate)="onActivate($event)"
+                                   [externalPaging]="true" [count]="page.totalElements" [offset]="page.pageNumber"
+                                   [limit]="page.size" (page)='setPage($event)' [sorts]="[{prop: 'c_name', dir: 'asc'}]">
+                                   <ngx-datatable-column name="{{'LABELS.NAME' | translate}}" prop="c_name">
+                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                                             let-row="row">
+                                             <a [routerLink]="['/pages/zones/zone-info']" (click)="getZoneId(row)" href>
+                                                  {{value}}</a>
+                                        </ng-template>
+                                   </ngx-datatable-column>
+                                   <ngx-datatable-column name="{{ 'Menu.ASSETTYPES' | translate }}" prop="assets_Count">
+                                        <ng-template ngx-datatable-cell-template let-value="value">
+                                             {{value}}
+                                        </ng-template>
+                                   </ngx-datatable-column>
+                                   <ngx-datatable-column name="{{'LABELS.TECHNICIANS_COUNT' | translate}}" prop="technicians_count">
+                                        <ng-template ngx-datatable-cell-template let-value="value">
+                                             {{value}}
+                                        </ng-template>
+                                   </ngx-datatable-column>
+                                   <ngx-datatable-column name="{{'LABELS.OBSERVERS_COUNT' | translate}}" prop="observers_count">
+                                        <ng-template ngx-datatable-cell-template let-value="value">
+                                             {{value}}
+                                        </ng-template>
+                                   </ngx-datatable-column>
+                                   <ngx-datatable-column name="{{'LABELS.ACTION' | translate}}" headerClass="text-center"
+                                        cellClass="text-center" [sortable]="false">
+                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                                             let-row="row">
+                                             <button type="button" (click)="editZonePrompt(row)" data-toggle="modal"
+                                                  data-target="#addZone-modal" title="Edit" class="btn btn-warning btn-circle"><i
+                                                       class="fa fa-edit" aria-hidden="true"></i></button>
+                                             <button type="button" (click)="deleteZonePrompt(row)" data-toggle="modal"
+                                                  title="Delete" class="btn btn-danger btn-circle"><i class=" fa fa-trash-o"
+                                                       aria-hidden="true"></i></button>
+                                        </ng-template>
+                                   </ngx-datatable-column>
+                              </ngx-datatable>
+                         </div>
+                         <!--users datatable end-->
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>

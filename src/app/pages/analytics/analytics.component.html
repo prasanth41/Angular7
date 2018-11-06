@@ -1,0 +1,108 @@
+<div class="row">
+     <div class="col">
+          <div widget class="card">
+               <div class="card-header">
+                    <div class="row">
+                         <div class="col-md-4">
+                              <a style="cursor:pointer" title="Filter" data-toggle="modal" data-target="#filter-analytics"
+                                   (click)="filterAnalyticsPopup()"><i class="fa fa-filter"></i> <strong>{{'LABELS.FILTER'|
+                                        translate}}</strong>&nbsp;</a>
+                              <i class="fa fa-calendar"></i>&nbsp;&nbsp;<strong>{{fromDate | date: 'MM-dd-yyyy'}}
+                                   {{'ANALYTICS.LABELS.TO'| translate}} {{toDate | date: 'MM-dd-yyyy'}}</strong>&nbsp;&nbsp;
+                         </div>
+                         <div class="col-md-4 text-center">
+                              <strong style="color: black;">{{filter.selectedAsset}}</strong>
+                         </div>
+                         <div class="col-md-4">
+                              <div style="margin-top: -10px;" class="widget-controls">
+                                   <a (click)="resetAnalyticsFilter()"><i class="fa fa-undo"></i>&nbsp;<strong>{{'LABELS.RESET'|
+                                             translate}}</strong></a>
+                                   <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                                   <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                                   <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                                   <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                                   <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <!-- Filter Analytics Modal Popup Start-->
+               <div class="modal fade" id="filter-analytics" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+                    data-backdrop="static" data-keyboard="true" style="display: none;">
+                    <div class="modal-dialog modal-lg" role="document">
+                         <div class="modal-content">
+                              <div class="modal-header">
+                                   <h4 class="modal-title custom-font"><strong>{{'LABELS.FILTER'| translate}}</strong></h4>
+                                   <button class="close" (click)="filterCancel()">&times;</button>
+                              </div>
+                              <div class="modal-body">
+                                   <form>
+                                        <div class="row" *ngIf="showTenant">
+                                             <div class="form-group col-md-6">
+                                                  <label for="name">{{'LABELS.TENANT'| translate}}:</label>
+                                                  <select placeholder="Choose Tenant" class="form-control" name="tenant"
+                                                       [(ngModel)]="filter.tenant" (change)="onChangeTenant($event.target.value)">
+                                                       <option [ngValue]="Tenant" disabled selected>{{'ANALYTICS.LABELS.CHOOSE_TENANT'|
+                                                            translate}} </option>
+                                                       <!-- <option>All</option> -->
+                                                       <option *ngFor="let tenant of tenants" [ngValue]="tenant._customInfo.c_id">
+                                                            {{tenant._customInfo.c_name}}
+                                                       </option>
+                                                  </select>
+                                             </div>
+                                        </div>
+                                        <div class="row">
+                                             <div class="form-group col-md-6">
+                                                  <label for="selectedName">Site Name:</label>
+                                                  <!-- <ngx-select-dropdown (change)="changeValue($event)" [(value)]="selectedOptions" [multiple]="false" [options]="sites" [config]="config"></ngx-select-dropdown> -->
+
+                                                  <select class="form-control" placeholder="" [(ngModel)]="filter.selectedName"
+                                                       name="assetName" (change)="changeValue($event)">
+                                                       <!-- <option> All</option> -->
+                                                       <option *ngFor="let data of sites" [value]="data.name">
+                                                            {{data.name}}
+                                                       </option>
+                                                  </select>
+                                             </div>
+
+                                             <div class="form-group col-md-6">
+                                                  <label for="Parameter">Parameter:</label>
+                                                  <input class="form-control" type="text" name="parameter" [(ngModel)]="filter.parameter"
+                                                       disabled>
+                                             </div>
+                                        </div>
+                                        <div class="row">
+                                             <div class="form-group col-md-12" required>
+                                                  <label>{{'LABELS.DATE_RANGE'| translate}}:</label>
+                                                  <input class="form-control" #drp="bsDaterangepicker"
+                                                       bsDaterangepicker [(ngModel)]="bsRangeValue" [bsConfig]="bsConfig"
+                                                       [ngModelOptions]="{standalone: true, showWeeks:true}">
+                                             </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                             <button class="btn btn-success btn-sm" type="submit" (click)="filterAnalyticsData()"><i
+                                                       class="fa fa-arrow-right"></i>{{'LABELS.FILTER'| translate}}</button>
+                                        </div>
+                                   </form>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <!-- Filter Analytics Modal Popup End-->
+
+               <div class="card-body widget-body">
+                    <div class="row">
+
+                         <div class="col-md-12">
+                              <div class="card">
+                                   <div class="card-body">
+                                        <div [chart]="sensorIssues" style="height: 300px;"></div>
+                                   </div>
+                              </div>
+                         </div>
+
+                    </div>
+               </div>
+
+          </div>
+     </div>
