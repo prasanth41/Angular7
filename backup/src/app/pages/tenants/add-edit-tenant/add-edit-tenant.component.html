@@ -1,0 +1,124 @@
+<!--add edit modal popup start-->
+<div bsModal #addEditTenantModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-label" data-backdrop="static" data-keyboard="false" style="z-index: 1051 !important;display: none;padding-top: 10px">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title custom-font" id="modal-large-label"><strong>{{AddOrEditTenant}}</strong>&nbsp;{{'LABELS.TENANT'| translate}}</h4>
+        <button class="close" data-dismiss="modal" (click)="hideTenantModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <legend>
+          <h5><strong>{{'LABELS.TENANT_INFORMATION'| translate}}</strong></h5>
+        </legend>
+        <hr>
+        <form [formGroup]="tenantForm">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="name" class="control-label required">{{'LABELS.NAME'| translate}}:</label>
+              <input class="form-control checking-field" type="text" formControlName="name" name="name" placeholder="{{ ('PLACE_HOLDERS.ENTER_NAME' | translate) + ' ' +  ('PLACE_HOLDERS.MANDATORY' | translate)}}">
+              <span class="help-block text-danger" *ngIf="tenantForm.get('name').touched && tenantForm.get('name').hasError('required')">{{'INFO.NAME_REQUIRED'| translate}}</span>
+            </div>
+            <div class="form-group col-md-6">
+              <label>{{'LABELS.LOGO'| translate}}:</label>
+              <br/>
+              <div class="input-group file-upload">
+                <span class="input-group-prepend">
+                    <span class="input-group-text">
+                      <img style="height: 20px;width: 20px;" [src]="userImage?userImage:'./assets/img/image-icon.png'">
+                    </span>
+                </span>
+                <input type="file" formControlName="image" (change)="fileChange($event)" class="form-control file-upload-btn" />
+                <input type="text" class="form-control" placeholder="{{'PLACE_HOLDERS.UPLOAD_LOGO'| translate}}" value="{{file}}">
+                <i class="fa fa-times delete-file" (click)="removeFile()" *ngIf="file"></i>
+                <span class="input-group-btn">
+                                  <button class="btn btn-primary btn-sm" type="button"><i class="fa fa-upload"></i></button>
+                              </span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label>{{'LABELS.ADDRESS'| translate}}:</label>
+              <input placeholder="{{ ('PLACE_HOLDERS.ENTER_ADDRESS' | translate) + ' ' +  ('PLACE_HOLDERS.OPTIONAL' | translate)}}" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search formControlName="address" name="address">
+            </div>
+          </div>
+
+          <legend>
+            <h5><strong>{{'LABELS.TENANT_ADMIN_INFORMATION'| translate}}</strong></h5>
+          </legend>
+          <hr>
+
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="email" class="control-label required">{{'LABELS.USER_NAME'| translate}}:</label>
+              <input class="form-control checking-field" type="email" formControlName="email" name='email' [readonly]="isReadOnly" (input)="email = $event.target.value" placeholder="{{ ('PLACE_HOLDERS.ENTER_VALID_EMAIL' | translate) + ' ' +  ('PLACE_HOLDERS.MANDATORY' | translate)}}"
+                required>
+              <span class="help-block text-danger" *ngIf="tenantForm.get('email').touched && tenantForm.get('email').hasError('required')">{{'INFO.EMAIL_REQUIRED'| translate}}</span>
+              <span class="help-block text-danger" *ngIf="tenantForm.get('email').touched && tenantForm.get('email').hasError('invalidEmail')">{{'INFO.VALID_EMAIL'| translate}}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="firstName" class="control-label required">{{'LABELS.FIRST_NAME'| translate}}:</label>
+              <input class="form-control checking-field" type="text" formControlName="firstName" name="firstName" required placeholder="{{ ('PLACE_HOLDERS.ENTER_FIRST_NAME' | translate) + ' ' +  ('PLACE_HOLDERS.MANDATORY' | translate)}}">
+              <span class="help-block text-danger" *ngIf="tenantForm.get('firstName').touched && tenantForm.get('firstName').hasError('required')">{{'INFO.FIRST_NAME_REQUIRED'| translate}}</span>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="lastName" class="control-label required">{{'LABELS.LAST_NAME'| translate}}:</label>
+              <input class="form-control checking-field" type="text" formControlName="lastName" name="lastName" required placeholder="{{ ('PLACE_HOLDERS.ENTER_LAST_NAME' | translate) + ' ' +  ('PLACE_HOLDERS.MANDATORY' | translate)}}">
+              <span class="help-block text-danger" *ngIf="tenantForm.get('lastName').touched && tenantForm.get('lastName').hasError('required')">{{'INFO.LAST_NAME_REQUIRED'| translate}}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="custom-control custom-checkbox">
+                            <input formControlName="isGenerateChecked" name="isGenerateChecked"  class="custom-control-input" type="checkbox" (click)="generateRandomPassword()">
+                            <span class="custom-control-label">{{'CHECK_LIST.AUTO_GENERATE_PASSWORD'| translate}}</span>
+              </label>
+            </div>
+
+
+            <div class="form-group col-md-6">
+              <label class="custom-control custom-checkbox">
+                      <input formControlName="isShowPasswordChecked" name="isShowPasswordChecked" class="custom-control-input" type="checkbox" (click)="hideShowPassword()">
+                      <span class="custom-control-label">{{'CHECK_LIST.SHOW_PASSWORD'| translate}}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="password" class="control-label {{(tenantForm.get('password').required === true)? 'required' : '' }}">{{'LABELS.PASSWORD'| translate}}:</label>
+              <input class="form-control checking-field" type="password" #showhideinput formControlName="password" name='password' placeholder="{{ ('PLACE_HOLDERS.ENTER_NEW_PASSWORD' | translate) + ' (' +  mandatoryOrOptional+ ')' }}" minlength="4">
+              <span class="help-block text-danger" *ngIf="tenantForm.get('password').touched && tenantForm.get('password').hasError('required')">{{'INFO.PASSWORD_REQUIRED'| translate}}</span>
+              <span class="help-block text-danger" *ngIf="tenantForm.get('password').touched && tenantForm.get('password').hasError('minlength')">{{'INFO.PASSWORD_MIN_SHOULDBE_FOUR'| translate}}</span>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="confirmPassword" class="control-label {{(tenantForm.get('confirmPassword').required === true)? 'required' : '' }}">{{'LABELS.CONFIRM_PASSWORD'| translate}}:</label>
+              <input class="form-control checking-field" type="password" #showconfirmhideinput formControlName="confirmPassword" name='confirmPassword' placeholder="{{ ('PLACE_HOLDERS.CONFIRM_NEW_PASSWORD' | translate) + ' (' +  mandatoryOrOptional+ ')' }}">
+              <span class="help-block text-danger" *ngIf="tenantForm.get('confirmPassword').touched && tenantForm.get('confirmPassword').hasError('required')">{{'INFO.PASSWORD_REQUIRED'| translate}}</span>
+              <span class="help-block text-danger" *ngIf="tenantForm.get('confirmPassword').touched && tenantForm.get('confirmPassword').hasError('mismatchedPasswords')">{{'INFO.PASSWORD_NOT_MATCH'| translate}}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-12" [hidden]="tenantForm.controls.password.value === ''">
+              <label>{{'LABELS.EMAIL_PASSWORD_TO'| translate}}: </label>
+              <input class="form-control checking-field" type="email" formControlName="emailPasswordTo" name="emailPasswordTo" [ngModel]="email" placeholder="{{ ('PLACE_HOLDERS.ENTER_VALID_EMAIL' | translate) + ' ' +  ('PLACE_HOLDERS.OPTIONAL' | translate)}}">
+              <p class="help-block">
+                <span class="help-block text-danger" *ngIf="tenantForm.get('emailPasswordTo').touched && tenantForm.get('emailPasswordTo').hasError('required')">{{'INFO.EMAIL_REQUIRED'| translate}}</span>
+                <span class="help-block text-danger" *ngIf="tenantForm.get('emailPasswordTo').touched && tenantForm.get('emailPasswordTo').hasError('invalidEmail')">{{'INFO.VALID_EMAIL'| translate}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" (click)="onSubmit(tenantForm)" class="btn btn-success btn-sm" [disabled]="tenantForm.invalid"><i class="fa fa-arrow-right"></i>  {{createOrUpdateTenant}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--add edit modal popup end-->

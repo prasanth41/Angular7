@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,7 +12,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
-
 export const routes = [
      { path: '', component: AnalyticsComponent, pathMatch: 'full' }
 ];

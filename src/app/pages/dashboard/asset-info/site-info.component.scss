@@ -1,0 +1,137 @@
+// @import "../../../theme/styles/variables";
+// .bg {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background: url(http://fillmurray.com/1000/500) no-repeat center center / cover;
+//   transition: all 0.5s ease;
+// }
+// .card-body:hover .bg {
+//  -webkit-filter: blur(2px);
+//       filter: blur(2px);
+// }
+
+.container {
+     position: absolute;
+     text-align: center;
+     color: white;
+     top: 0px;
+}
+
+.top-right {
+     position: absolute;
+     top: 10px;
+     right: 11px;
+}
+
+.battery-red {
+     padding: 2px 13px 5px 6px;
+}
+
+tr {
+     height: 1px;
+}
+
+.original-location-icon {
+     // padding: 16px;
+     height: 18px;
+
+     // background-color: red;
+     // display: block;
+     padding-top: 21px;
+     padding-bottom: 25px;
+     padding-right: 5px;
+     padding-left: 10px;
+     margin: 0 auto;
+     -webkit-mask: url("assets/i18n/svg/moved.svg") no-repeat left;
+     mask: url("assets/i18n/svg/moved.svg") no-repeat left;
+}
+
+.distance-icon {
+     padding: 10px;
+     height: 18px;
+
+     // background-color: red;
+     // display: block;
+
+     margin: 0 auto;
+     -webkit-mask: url("assets/i18n/svg/distance.svg") no-repeat left;
+     mask: url("assets/i18n/svg/distance.svg") no-repeat left;
+}
+
+.draggable {
+     cursor: move;
+     cursor: grab;
+     cursor: -moz-grab;
+     cursor: -webkit-grab;
+}
+
+div[id^=overlay] {
+     position: absolute;
+     display: none;
+     width: 87%;
+     height: 100%;
+     top: 5;
+     left: 10;
+     right: 15;
+     bottom: 15;
+     background-color: black;
+     opacity: 0.4;
+     z-index: 2;
+     cursor: pointer;
+}
+
+.sensor-ok {
+     background-color: white;
+     color: #0F8942;
+     border-style: solid;
+     border-width: 0.1px;
+     border-color: #0F8942;
+}
+
+.sensor-critical {
+     background-color: #F4C5C8;
+     color: #9F2129;
+     border-style: solid;
+     border-width: 0.1px;
+     border-color: #9F2129;
+}
+
+.sensor-checkRequired {
+     background-color: #FBF8EF;
+     color: #F7D358;
+     border-style: solid;
+     border-width: 0.1px;
+     border-color: #F7D358;
+}
+
+.battery-theft-icon {
+     position: absolute;
+     top: 5px;
+     right: 5px;
+     padding: 0;
+     height: 28px;
+     width: 28px;
+     background-color: #AE1522;
+     display: block;
+     margin: 0 auto;
+     -webkit-mask: url("assets/i18n/svg/theft-warning.svg") no-repeat left;
+     mask: url("assets/i18n/svg/theft-warning.svg") no-repeat left;
+}
+
+.alert-row {
+     display: table;
+     width: 100%;
+     margin-bottom: 3px;
+
+     .alert-label {
+          display: table-cell;
+          width: 130px;
+     }
+
+     .alert-value {
+          display: table-cell;
+     }
+}

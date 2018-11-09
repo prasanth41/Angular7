@@ -1,0 +1,37 @@
+<!-- <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title custom-font"><strong></strong></h3>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal"> <i class="fa fa-arrow-left"></i>&nbsp;Close</button>
+    </div>
+  </div>
+</div> -->
+<!-- <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"> -->
+<div bsModal #autoShownLocation="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h4 class="modal-title pull-left">{{'LABELS.LOCATION' | translate}}</h4>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="hideMap()">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
+               <div class="modal-body">
+                    <agm-map #map [latitude]="moved_location_lat" [longitude]="moved_location_lon" [zoom]="12">
+                         <agm-marker [title]="assetLocationName" [latitude]="moved_location_lat" [longitude]="moved_location_lon"
+                              [iconUrl]="image"> </agm-marker>
+                    </agm-map>
+
+                    <!-- <agm-map #map [latitude]="17" [longitude]="78" [zoom]="12">
+                  <agm-marker [latitude]="17" [longitude]="78"> </agm-marker>
+                </agm-map> -->
+               </div>
+          </div>
+     </div>
+</div>

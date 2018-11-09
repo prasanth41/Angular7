@@ -1,0 +1,161 @@
+<div class="row">
+     <div class="col">
+          <div widget class="card">
+
+               <!-- Settings Nav Tabs Start -->
+               <div class="card-body widget-body">
+                    <div class="row">
+                         <div class="col-lg-12 col-12">
+                              <tabset [justified]="true" type="pills">
+                                   <tab id="tab-profile" (select)="onTabChangeSettings($event)">
+                                        <ng-template tabHeading><i class="fa fa-user" name="profile"></i>&nbsp;{{
+                                             'LABELS.PROFILE' | translate }}</ng-template>
+                                        <form [formGroup]="userForm">
+                                             <div class="row">
+                                                  <div class="form-group col-md-12 legend" style=" font-size: 12px;  border-bottom: 1px dotted #cacaca; padding-bottom: 5px;">
+                                                       <h4><strong>{{'LABELS.PERSONAL' | translate}}</strong>
+                                                            {{'LABELS.SETTINGS' | translate}}</h4>
+                                                       <p>{{'INFO.YOUR_PERSONAL_ACCOUNT_SETTINGS' | translate}}</p>
+                                                  </div>
+                                             </div>
+                                             <div class="row">
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.USER_NAME' | translate}}:</label>
+                                                       <input class="form-control checking-field" type="email"
+                                                            formControlName="email" readonly required>
+                                                  </div>
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.ROLE' | translate}}: </label>
+                                                       <input class="form-control checking-field" type="text"
+                                                            formControlName="role" readonly required>
+                                                  </div>
+                                             </div>
+                                             <div class="row">
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.FIRST_NAME' | translate}}:</label>
+                                                       <input class="form-control checking-field" type="text"
+                                                            formControlName="firstName" required placeholder="{{'PLACE_HOLDERS.FIRST_NAME_REQUIRED' | translate}} {{'PLACE_HOLDERS.MANDATORY' | translate}}">
+                                                       <span class="help-block text-danger" *ngIf="userForm.get('firstName').touched && userForm.get('firstName').hasError('required')">{{'INFO.FIRST_NAME_REQUIRED'
+                                                            | translate}}</span>
+                                                  </div>
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.LAST_NAME' | translate}}: </label>
+                                                       <input class="form-control checking-field" type="text"
+                                                            formControlName="lastName" required placeholder="{{'PLACE_HOLDERS.LAST_NAME_REQUIRED' | translate}} {{'PLACE_HOLDERS.MANDATORY' | translate}}">
+                                                       <span class="help-block text-danger" *ngIf="userForm.get('lastName').touched && userForm.get('lastName').hasError('required')">{{'INFO.LAST_NAME_REQUIRED'
+                                                            | translate}}</span>
+                                                  </div>
+                                             </div>
+                                             <div class="row">
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.PHONE' | translate}}: </label>
+                                                       <br />
+                                                       <international-phone-number [defaultCountry]="'us'"
+                                                            formControlName="mobileNumber"></international-phone-number>
+                                                  </div>
+
+
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.AVATAR' | translate}}: </label>
+                                                       <br />
+                                                       <div class="input-group file-upload">
+                                                            <span class="input-group-addon"><img style="height: 20px;width: 20px;"
+                                                                      [src]="userImage?userImage:'assets/img/user-icon.png'"></span>
+                                                            <input type="file" formControlName="image" (change)="fileChange($event)"
+                                                                 class="form-control file-upload-btn" />
+                                                            <input type="text" class="form-control" placeholder="Choose a file..."
+                                                                 value="{{file}}">
+                                                            <i class="fa fa-times delete-file" (click)="removeFile()"
+                                                                 *ngIf="file"></i>
+                                                            <span class="input-group-btn">
+                                                                 <button class="btn btn-primary btn-sm" type="button"><i
+                                                                           class="fa fa-upload"></i></button>
+                                                            </span>
+                                                       </div>
+                                                  </div>
+
+
+                                             </div>
+                                             <div class="modal-footer">
+                                                  <div class="row mx-auto text-center">
+                                                       <button type="submit" (click)="updateUserAdvanced(userForm)"
+                                                            class="btn btn-success btn-sm" [disabled]="userForm.invalid"
+                                                            data-dismiss="modal"> {{'BUTTONS.SAVE_CHANGE' | translate}}</button>&nbsp;&nbsp;
+                                                       <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"
+                                                            (click)="getUserDetails()"> {{'BUTTONS.CANCEL' | translate
+                                                            }}</button>
+                                                  </div>
+                                             </div>
+                                        </form>
+                                   </tab>
+                                   <tab id="tab-security" (select)="onTabChangeSettings($event)">
+                                        <ng-template tabHeading><i class="fa fa-lock" name="secutiry"></i>&nbsp;{{
+                                             'LABELS.SECURITY' | translate }}</ng-template>
+                                        <form [formGroup]="securityForm">
+                                             <div class="row">
+                                                  <div class="form-group col-md-12 legend" style=" font-size: 12px;  border-bottom: 1px dotted #cacaca; padding-bottom: 5px;">
+                                                       <h4><strong>{{'LABELS.SECURITY' | translate}}</strong>
+                                                            {{'LABELS.SETTINGS' | translate}}</h4>
+                                                       <p>{{'INFO.SECURE_YOUR_ACCOUNT' | translate}}</p>
+                                                  </div>
+                                             </div>
+                                             <div class="row">
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.USER_NAME' | translate}}:</label>
+                                                       <input class="form-control checking-field" type="email"
+                                                            formControlName="email" readonly required>
+                                                  </div>
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.CURRENT_PASSWORD' | translate}}: </label>
+                                                       <input class="form-control checking-field" type="password"
+                                                            formControlName="currentPassword" placeholder="{{'PLACE_HOLDERS.ENTER_CURRENT_PASSWORD' | translate}} {{'PLACE_HOLDERS.MANDATORY' | translate}}"
+                                                            minlength="4" required>
+                                                       <span class="help-block text-danger" *ngIf="securityForm.get('currentPassword').touched && securityForm.get('currentPassword').hasError('required')">{{'INFO.PASSWORD_REQUIRED'
+                                                            | translate}}</span>
+                                                       <span class="help-block text-danger" *ngIf="securityForm.get('currentPassword').touched && securityForm.get('currentPassword').hasError('minlength')">{{'INFO.PASSWORD_TOO_LONG'
+                                                            | translate}}</span>
+                                                  </div>
+                                             </div>
+                                             <div class="row">
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.NEW_PASSWORD' | translate}}: </label>
+                                                       <input class="form-control checking-field" type="password"
+                                                            formControlName="password" placeholder="{{'PLACE_HOLDERS.ENTER_NEW_PASSWORD' | translate}} {{'PLACE_HOLDERS.MANDATORY' | translate}}"
+                                                            minlength="4" required>
+                                                       <span class="help-block text-danger" *ngIf="securityForm.get('password').touched && securityForm.get('password').hasError('required')">{{'INFO.PASSWORD_REQUIRED'
+                                                            | translate}}</span>
+                                                       <span class="help-block text-danger" *ngIf="securityForm.get('password').touched && securityForm.get('password').hasError('minlength')">{{'INFO.PASSWORD_TOO_LONG'
+                                                            | translate}}</span>
+                                                  </div>
+                                                  <div class="form-group col-md-6">
+                                                       <label>{{'LABELS.CONFIRM_NEW_PASSWORD' | translate}}: </label>
+                                                       <input class="form-control checking-field" type="password"
+                                                            formControlName="confirmPassword" placeholder="{{'PLACE_HOLDERS.CONFIRM_NEW_PASSWORD' | translate}} {{'PLACE_HOLDERS.MANDATORY' | translate}}"
+                                                            required>
+                                                       <span class="help-block text-danger" *ngIf="securityForm.get('confirmPassword').touched && securityForm.get('confirmPassword').hasError('required')">{{'INFO.PASSWORD_REQUIRED'
+                                                            | translate}}</span>
+                                                       <span class="help-block text-danger" *ngIf="securityForm.get('confirmPassword').touched && securityForm.get('confirmPassword').hasError('mismatchedPasswords')">{{'INFO.PASSWORD_NOT_MATCH'
+                                                            | translate}}</span>
+                                                  </div>
+                                             </div>
+                                             <div class="modal-footer">
+                                                  <div class="row mx-auto text-center">
+                                                       <button type="submit" (click)="resetPassword(securityForm)"
+                                                            class="btn btn-success btn-sm" [disabled]="securityForm.invalid"
+                                                            data-dismiss="modal"> {{ 'BUTTONS.UPDATE_PASSWORD' |
+                                                            translate }}</button>&nbsp;&nbsp;
+                                                       <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"
+                                                            (click)="getUserDetails()"> {{ 'BUTTONS.CANCEL' | translate
+                                                            }}</button>
+                                                  </div>
+                                             </div>
+                                        </form>
+                                   </tab>
+                              </tabset>
+                         </div>
+                    </div>
+               </div>
+               <!-- Settings Nav Tabs End -->
+          </div>
+     </div>
+</div>

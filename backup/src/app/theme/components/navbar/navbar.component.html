@@ -1,0 +1,122 @@
+<nav class="nav az-navbar fixed-top">
+  <a class="navbar-brand" (click)="closeSubMenus()">
+    <img src="assets/img/logo/am_logo_full.png" alt="" class="d-md-block d-none" style="height:34px;">
+    <!-- <img src="assets/img/logo/dashboard-logo.png" alt="" width="100%" class="d-md-block d-none">
+      <img src="assets/img/logo/icon26x26.png" alt="" class="d-md-none"> -->
+  </a>
+
+  <div id="sidebar-menu" class="menu-wrapper" perfectScrollbar></div>
+  <div class="sidebar-hover-elem" [ngStyle]="{top: hoverElemTop + 'px', height: hoverElemHeight + 'px'}" [ngClass]="{'show-hover-elem': showHoverElem }"></div>
+
+  <div id="lines" class="transition" (click)="toggleMenu()"></div>
+  <!-- <form role="search" class="app-search d-md-block d-none">
+      <input type="text" placeholder="Search..." class="form-control">
+      <a href="javascript:void(0)"><i class="fa fa-search"></i></a>
+    </form> -->
+
+  <ul class="nav right-section">
+
+    <li class="nav-item">
+      <!-- <az-messages></az-messages> -->
+      <div style="margin-top: 4px;cursor: text;color:white;" *ngIf="showTenant">
+        <span style="margin:20px">{{userName}}</span>
+      </div>
+
+
+    </li>
+    <li class="nav-item">
+      <div class="dropdown float-right user-menu">
+        <a class="dropdown-toggle user-link" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+          <img src="{{userImage?userImage:'assets/img/user-icon.png'}}" alt="user-img" class="img-circle user-img">
+          <span class="d-lg-inline d-none" [textContent]="userName"><i class="fa fa-angle-down" name="angle-down"></i></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="user-info">
+            <img src="{{userImage?userImage:'assets/img/user-icon.png'}}" alt="user-img" class="img-circle user-img">
+            <p>
+              {{userName}}
+            </p>
+          </li>
+          <a class="dropdown-item" data-toggle="modal" (click)="showDownloadPopup()" data-target="#downloadMobileApp-modal"
+            *ngIf="enableMobileApps" data-toggle="modal"><i class="fa fa-download"></i>{{ 'LABELS.DOWNLOAD_MOBILE_APPS'
+            | translate }}</a>
+          <a class="dropdown-item" routerLink="/pages/settings"><i class="fa fa-cog"></i>{{ 'LABELS.SETTINGS' |
+            translate }}</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="logout()"><i class="fa fa-power-off"></i>{{
+            'LABELS.LOGOUT' | translate }}</a>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</nav>
+<!-- <div class="modal fade" id="downloadMobileApp-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+  data-backdrop="static" data-keyboard="true" style="display: none;">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title custom-font" id="modal-label"><strong>{{ 'LABELS.MOBILE' | translate }}</strong> {{
+          'LABELS.APPS' | translate }}</h4>
+        <button class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body text-center">
+        <form [formGroup]="downloadDemoAppForm">
+          <div class="form-group">
+            <div class="col-md-12 text-center">
+              <label>{{ 'LABELS.DOWNLOAD_APPS' | translate }}</label>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col-md-6">
+              <a href={{downloadDemoAppApk}} class="btn btn-primary btn-sm" (click)="downloadDemoApp()">{{
+                'LABELS.ANDROID_DEMO_APP' | translate }} <i class="fa fa-arrow-circle-o-down"></i></a>
+            </div>
+            <div class="col-md-6">
+              <a href={{downloadTechnicianAppApk}} class="btn btn-primary btn-sm" (click)="downloadTechnicianApp()">{{
+                'LABELS.ANDROID_TECHNICIAN_APP' | translate }} <i class="fa fa-arrow-circle-o-down"></i></a>
+            </div>
+          </div>
+          <hr class="line-dashed line-half" />
+          <div class="form-group">
+            <div class="col-md-12 text-center">
+              <label>{{ 'LABELS.SEND_APP_DOWNLOAD_LINK_MOBILE' | translate }}</label>
+            </div>
+          </div>
+          <div class="row">
+            <label style="float: left;" class="col-md-5 control-label">{{ 'LABELS.ANDROID_DEMO_APP' | translate }}</label>
+            <div class="col-md-4">
+              <international-phone-number [defaultCountry]="'us'" [required]="true" formControlName="phoneNumber"
+                minlength="10"></international-phone-number>
+              <span *ngIf="downloadDemoAppForm.get('phoneNumber').touched && !downloadDemoAppForm.get('phoneNumber').valid"
+                class="help-block text-danger">{{ 'INFO.VALID_PHONE' | translate }}</span>
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary btn-sm" [disabled]="downloadDemoAppForm.invalid" (click)="sendLinkForDemoApp(downloadDemoAppForm)">{{
+                'BUTTONS.SEND' | translate }} <i class="fa fa-paper-plane-o"></i></button>
+            </div>
+          </div>
+        </form>
+        &nbsp;
+        <form [formGroup]="downloadAppForTechnicianForm">
+          <div class="row">
+            <label style="float: left;" class="col-md-5 control-label">{{ 'LABELS.ANDROID_TECHNICIAN_APP' | translate
+              }}</label>
+            <div class="col-md-4">
+              <international-phone-number [defaultCountry]="'us'" [required]="true" formControlName="RTphoneNumber"
+                minlength="10"></international-phone-number>
+              <span *ngIf="downloadAppForTechnicianForm.get('RTphoneNumber').touched && !downloadAppForTechnicianForm.get('RTphoneNumber').valid"
+                class="help-block text-danger">{{ 'INFO.VALID_PHONE' | translate }}</span>
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary btn-sm" [disabled]="downloadAppForTechnicianForm.invalid"
+                (click)="sendLinkForTechnicianApp(downloadAppForTechnicianForm)">{{ 'BUTTONS.SEND' | translate }} <i
+                  class="fa fa-paper-plane-o"></i></button>
+            </div>
+          </div>
+        </form>
+        &nbsp;
+      </div>
+
+    </div>
+  </div>
+</div> -->

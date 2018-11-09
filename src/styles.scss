@@ -1,18 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+//@import url('http://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300,400,600');
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
-//---------------------------------------------------------------------------
-// You can also import 3rd party styles here.
-// For this delete all 3rd party styles from angular cli except style.scss and uncomment following styles.
-//----------------------------------------------------------------------------
-// $icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
-// @import "../node_modules/bootstrap/scss/bootstrap";
-// $fa-font-path : "../node_modules/font-awesome/fonts";
-// @import "../node_modules/font-awesome/scss/font-awesome";
-// @import "../node_modules/socicon/css/socicon.css";
-// @import "../node_modules/metrojs/release/MetroJs.Full/MetroJs.css";
-// @import "../node_modules/froala-editor/css/froala_editor.pkgd.min.css";
-// @import "../node_modules/dragula/dist/dragula.min.css";
-// @import "../node_modules/ngx-toastr/toastr.css";
+// @import '~primeng/resources/themes/omega/theme.css';
+// @import '~primeng/resources/primeng.min.css';
+
 @-webkit-keyframes spin-cubeGridScaleDelay {
+
   0%,
   100%,
   70% {
@@ -23,7 +16,9 @@
     -webkit-transform: scale3D(0, 0, 1);
   }
 }
+
 @-moz-keyframes spin-cubeGridScaleDelay {
+
   0%,
   100%,
   70% {
@@ -34,7 +29,9 @@
     -moz-transform: scale3D(0, 0, 1);
   }
 }
+
 @keyframes spin-cubeGridScaleDelay {
+
   0%,
   100%,
   70% {
@@ -68,8 +65,8 @@
 }
 
 .spin-cube-grid {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   margin: 0 auto;
 
   .spin-cube {
@@ -180,7 +177,7 @@
 }
 
 .main-wrapper {
-  padding: 15px 30px 60px !important;
+  padding: 15px 10px 60px !important;
 }
 
 .nav {
@@ -203,7 +200,7 @@
 }
 
 .nav-pills .nav-link.active,
-.show > .nav-pills .nav-link {
+.show>.nav-pills .nav-link {
   color: #fff !important;
   background-color: #337ab7 !important;
   border-radius: 0 !important;
@@ -285,6 +282,7 @@ a {
 .ngx-datatable .datatable-header-cell {
   padding: 0.25rem !important;
 }
+
 /*button circle*/
 .btn-circle {
   width: 30px !important;
@@ -295,6 +293,7 @@ a {
   line-height: 1.428571429 !important;
   border-radius: 15px !important;
 }
+
 /*search placeholder in italic*/
 ::-webkit-input-placeholder {
   font-style: italic;
@@ -303,13 +302,14 @@ a {
 .capitalize {
   text-transform: capitalize;
 }
+
 //inline-text for images and font
 
 .inline-text {
   display: inline-block;
   max-width: 100%;
   white-space: nowrap;
-  overflow: hidden!important;
+  overflow: hidden !important;
   text-overflow: ellipsis;
 }
 
@@ -400,7 +400,7 @@ button {
   position: fixed;
   color: White;
   top: 0;
-  botton: 0;
+  bottom: 0;
   right: 0;
   left: 0;
   width: 100%;
@@ -452,9 +452,4 @@ bs-daterangepicker-container {
 .bs-datepicker-head {
   height: 35px !important;
   padding: 1px !important;
-}
-
-#spinner {
-  opacity: 1 !important;
-  background-color: transparent !important;
 }

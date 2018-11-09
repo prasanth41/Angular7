@@ -1,0 +1,43 @@
+<div class="login-container" style="background-image: url('assets/img/logo/bg.png'); background-size: cover; background-repeat: no-repeat; background-position: center center;">
+  <div class="col-xl-4 col-md-6 col-10 mx-auto">
+    <div class="card">
+      <div class="card-body text-center">
+        <img src="assets/img/logo/logo_full_login.png" alt="Battery Monitoring" />
+        <hr>
+        <h6 class="card-title">{{ ('TITLES.LOGIN_TO_CONTINUE' | translate).toUpperCase() }}</h6>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class=" text-left">
+          <div class="form-group">
+            <input name="userMail" formControlName="userMail" class="form-control checking-field" placeholder="Email"
+              type="text">
+            <span class="help-block text-danger" *ngIf="form.get('userMail').touched && form.get('userMail').hasError('required')">{{
+              'VALIDATIONS.EMAIL_REQUIRED' | translate }}</span>
+            <span class="help-block text-danger" *ngIf="form.get('userMail').touched && form.get('userMail').hasError('invalidEmail')">{{
+              'VALIDATIONS.INVALID_EMAIL' | translate }}</span>
+          </div>
+          <div class="form-group">
+            <input name="userPassword" formControlName="userPassword" class="form-control checking-field" placeholder="Password"
+              type="password">
+            <span class="help-block text-danger" *ngIf="form.get('userPassword').touched && form.get('userPassword').hasError('required')">{{
+              'VALIDATIONS.PASSWORD_REQUIRED' | translate }}</span>
+            <span class="help-block text-danger" *ngIf="form.get('userPassword').touched && form.get('userPassword').hasError('minlength')">{{
+              'VALIDATIONS.PASSWORD_NOT_LONG_ENOUGH_MIN_4' | translate }}</span>
+          </div>
+          <div class="form-group d-flex justify-content-between">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input checkbox-main" id="login-keep">
+              <label class="custom-control-label" for="login-keep">{{ 'LOGIN.KEEP_ME_SIGNED_IN' | translate }}</label>
+            </div>
+            <a class="btn btn-link forgot transition pull-right" [routerLink]="['/forgot-pass']" href="javascript:void(0);">{{
+              'LOGIN.FORGOT_PASSWORD'
+              | translate }}?</a>
+          </div>
+          <div class="form-group">
+            <button [disabled]="!form.valid" class="btn btn-primary btn-block" type="submit">{{ 'BUTTONS.LOGIN' |
+              translate }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

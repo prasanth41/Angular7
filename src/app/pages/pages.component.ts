@@ -10,7 +10,6 @@ import { AppState } from '../app.state';
   providers: [AppState]
 })
 export class PagesComponent implements OnInit {
-
   public isMenuCollapsed: boolean = false;
   private copyrightYear;
   constructor(private _state: AppState,
@@ -40,8 +39,8 @@ export class PagesComponent implements OnInit {
     this._state.notifyDataChanged('menu.isCollapsed', true);
   }
 
-  public ngAfterViewInit(): void {
-    // document.getElementById('preloader').style['display'] = 'none';
-  }
+  // public ngAfterViewInit(): void {
+  //   document.getElementById('preloader').style['display'] = 'none';
+  // }
 
 }

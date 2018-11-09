@@ -1,446 +1,633 @@
-<div class="row">
-  <div class="col-12">
-    <az-datamap></az-datamap>
+<!--delete asset modal popup start-->
+<div class="modal fade" id="deleteAsset-Modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" data-backdrop="static"
+  data-keyboard="true" style="display: none;">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title custom-font" id="modal-label"><strong>{{'CRUD.DELETE' | translate }}</strong>&nbsp;{{'Menu.ASSETTYPE'
+          | translate }}</h4>
+        <button class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text-danger"><strong>{{ 'INFO.DELETE_ASSET' | translate }}</strong></p>
+        <span><strong>{{'LABELS.NAME' | translate }}: </strong> {{assetNameToDelete}} </span><br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-sm" (click)="deleteAsset()"><i class="fa fa-arrow-right"></i>
+          {{'CRUD.DELETE' | translate }}</button>
+      </div>
+    </div>
   </div>
 </div>
 
+<!--Health state modal popup start-->
+<div class="modal fade" id="healthState-Modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" data-backdrop="static"
+  data-keyboard="true" style="display: none;">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="padding:6px 15px">
+
+        <h5 class="modal-title"><strong>{{'LABELS.STATE_OF_HEALTH' | translate}}</strong></h5>
+        <a class="close" data-dismiss="modal" (click)="closeWindow()" href>&times;</a>
+      </div>
+      <div class="modal-body text-center" style="padding-bottom:0px;">
+        <p class="pull-left">{{'LABELS.BANK' | translate}}: <strong>{{healthbatteryBank}}</strong></p>
+        <p class="pull-right"> {{'LABELS.TIME' | translate}}: <strong>{{health_batteryReportedTime | date :'MM-dd-yyyy
+            HH:mm:ss'}}</strong></p>
+      </div>
+      <div class="modal-body text-center" style="padding-top:0px;">
+        <div class="row" style="text-align:left">
+          <div class="col-md-4">
+            <p [ngStyle]="{'border-left': '5px solid','border-color':voltageColor,'margin-bottom':'0px','line-height': '18px'}">
+              <span style="margin-left: 10px;">{{'LABELS.VOLTAGE' | translate}}</span><br><span *ngIf="showbadcells"
+                style="margin-left: 10px;" title=" {{badcellPostfixNo}}"> <span *ngFor=" let data of badcellPostfixNo2">Cell{{data}},</span>..
+              </span></p>
+          </div>
+          <div class="col-md-4">
+            <p [ngStyle]="{'border-left': '5px solid','border-color':socColor,'margin-bottom':'0px','line-height': '18px'}">
+              <span style="margin-left: 10px;">{{'LABELS.SOC' | translate}}</span><br> <b style="margin-left: 10px;">{{socReading}}%</b></p>
+          </div>
+          <div class="col-md-4">
+            <p [ngStyle]="{'border-left': '5px solid','border-color':temperatureColor,'margin-bottom':'0px','line-height': '18px'}">
+              <span style="margin-left: 10px;">{{'LABELS.TEMPERATURE' | translate}}</span><br> <b style="margin-left: 10px;">{{temperatureReading}}°C</b></p>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="showHealthCells">
+          <div class="row" *ngFor="let healthRow of [healthrow1,healthrow2,healthrow3,healthrow4];">
+            <div class="col-sm-4" *ngFor="let cell of healthRow;" style="margin-bottom:1em;">
+              <div class="card " [ngClass]="cell.statusClass" style="height: 35px;">
+                <div style="font-size: 12px !important; text-align:center;padding-top:0px;margin-top: 1px;">{{cell.sensorId}}</div>
+                <div style="font-size:14px!important;white-space:nowrap;color:#666666;text-align:center;margin-top:-3px;padding-bottom:0px;">{{cell.value
+                  | number : '1.0-3'}}</div>&ensp;
+                <img style="position: absolute;left:6px;top:15px;" src="assets/img/battery_red.png">&ensp;
+                <img style="position: absolute;right:6px;top:15px;" src="assets/img/battery_black.png">
+              </div>
+            </div>
+            <hr style="margin-top: -6px;width:100%;margin-bottom: 7px;width:100%;">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <i class="fa fa-square" style="color:green"></i>
+            <span style="margin-bottom:0rem;" class="card-text">{{'LABELS.GOOD' | translate}}</span>
+          </div>
+
+          <div class="col-md-4">
+            <i class="fa fa-square" style="color: red"></i>
+            <span style="margin-bottom:0rem;" class="card-text">{{'LABELS.BAD' | translate}}</span>
+          </div>
+
+          <div class="col-md-4">
+            <i class="fa fa-square" style="color: rgb(255, 153, 0)"></i>
+            <span style="margin-bottom:0rem;" class="card-text">{{'LABELS.CHECK_REQUIRED' | translate}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Health state modal popup end-->
+<am-location #location> </am-location>
 <div class="row">
+  <div class="col-md-11"></div>
+  <div class="col-md-1">
+    <div class="dropdown">
+      <div class="widget-controls" style="top: -35px">
+        <a class="dropdown-toggle transition setting" data-toggle="dropdown">
+          <i class="fa fa-gear" style="font-size: 20px;color: #000e0efb"></i>
+        </a>
 
-  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 bottom-30">
-    <div class="card small-info-box">
-      <div class="media">
-        <span class="media-left">
-            <i class="fa fa-thumbs-o-up"></i>
-        </span>
-        <div class="media-body text-right">
-          <h6 class="media-heading no-margin">LIKES</h6>
-          <span counter [count]="21130" [increment]="4" [interval]="3"></span>
+        <div class="dropdown-menu show" style="left: -102px;" (click)="onEvent($event)">
+          <div class="container" style="width: 100%; position:relative !important">
+            <div class="custom-controls-stacked">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCardCheckbox()"
+                  [(ngModel)]="statusCardIsChecked.healthState">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{'LABELS.HEALTH_STATE' | translate}}</span>
+              </label>
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCardCheckbox()"
+                  [(ngModel)]="statusCardIsChecked.chargingState">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{ 'LABELS.CHARGING_STATE' | translate }}</span>
+              </label>
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCardCheckbox()"
+                  [(ngModel)]="statusCardIsChecked.weakBatteries">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{'LABELS.BANKS_WITH_WEAK_CELLS' | translate }}</span>
+              </label>
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCardCheckbox()"
+                  [(ngModel)]="statusCardIsChecked.theftBatteries">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{'LABELS.THEFT_BATTERIES' | translate }}</span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
+</div>
+<div class="row">
+  <div class="col-md-3" *ngIf="statusCardIsChecked.healthState">
+    <div class="card top-card" (focus)=setFocus(id)>
+      <div class="row card-body" style="padding:0.35rem 1.25rem !important">
+        <div style="display:table;">
+          <div [chart]="healthStateChart" style="height:101px;width:100px;display:table-cell;"></div>
+          <div style="display:table-cell;vertical-align:middle;padding-left:18px;">
+            <h6>
+              <!-- <i class="fa fa-check"></i>  -->
+              {{'LABELS.HEALTH_STATE' | translate}}</h6>
+            <div class="top-card-legend">
+              <div class=""> <i class="fa fa-circle text-success m-0" aria-hidden="true"></i> {{'LABELS.GOOD' |
+                translate}}
+                <i class="fa fa-circle text-danger m-0" aria-hidden="true"></i> {{'LABELS.BAD' | translate}}
+                <i class="fa fa-circle" style="color:#bcbec0;" aria-hidden="true"></i> NR
+              </div>
+              <!-- <div class=""> </div> -->
+              <!-- <div > </div> -->
+              <div class="text-warning m-0"> <i class="fa fa-circle" aria-hidden="true"></i> {{'LABELS.CHECK_REQUIRED'
+                | translate}}</div>
 
-  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 bottom-30">
-    <div class="card small-info-box">
-      <div class="media">
-        <span class="media-left">
-            <i class="fa fa-shopping-cart"></i>
-        </span>
-        <div class="media-body text-right">
-          <h6 class="media-heading no-margin">SALES</h6>
-          <span counter [count]="38225" [increment]="1" [interval]="5"></span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
-
-  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 bottom-30">
-    <div class="card small-info-box">
-      <div class="media">
-        <span class="media-left">
-            <i class="fa fa-comment-o"></i>
-        </span>
-        <div class="media-body text-right">
-          <h6 class="media-heading no-margin">COMMENTS</h6>
-          <span counter [count]="5423" [increment]="3" [interval]="2"></span>
+  <div class="col-md-3" *ngIf="statusCardIsChecked.chargingState">
+    <div class="card top-card">
+      <div class="row card-body" style="padding:0.35rem 1.25rem !important">
+        <div style="display:table;">
+          <div [chart]="chargeStateChart" style="height:100px;width:100px;display:table-cell;"></div>
+          <div style="display:table-cell;vertical-align:middle;padding-left:18px;">
+            <h6 style="white-space: nowrap;">
+              <!-- <i class="fa fa-bolt"></i>  -->
+              {{ 'LABELS.CHARGING_STATE' | translate }}</h6>
+            <div class="top-card-legend">
+              <div class="text-success m-0">
+                <i class="fa fa-circle" aria-hidden="true"></i> {{'LABELS.FLOAT' | translate}}</div>
+              <div class="text-warning m-0">
+                <i class="fa fa-circle" aria-hidden="true"></i> {{'LABELS.CHARGING' | translate}}</div>
+              <div class="text-danger m-0">
+                <i class="fa fa-circle" aria-hidden="true"></i> {{'LABELS.DISCHARGING' | translate}}</div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 
-  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 bottom-30">
-    <div class="card small-info-box">
-      <div class="media">
-        <span class="media-left">
-            <i class="fa fa-download"></i>
-        </span>
-        <div class="media-body text-right">
-          <h6 class="media-heading no-margin">DOWNLOADS</h6>
-          <span counter [count]="1521" [increment]="1" [interval]="5"></span>
-        </div>
+  <div class="col-md-3" *ngIf="statusCardIsChecked.weakBatteries">
+    <div class="card top-card">
+      <div class="row card-body" style="padding:0.35rem 1.25rem !important">
+        <i class="banks-with-weak-cells"></i>
+        <h6 style="margin-bottom:0.45em; white-space:nowrap;margin-top:5px;margin-left:5px;">
+          {{'LABELS.BANKS_WITH_WEAK_CELLS' | translate }}
+        </h6>
+        <div [chart]="weakBatteries" style="height:70px;width:100%;"></div>
       </div>
-    </div>    
+    </div>
   </div>
 
-  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 bottom-30">
-    <div class="card small-info-box">
-      <div class="media">
-        <span class="media-left">
-            <i class="fa fa-users"></i>
-        </span>
-        <div class="media-body text-right">
-          <h6 class="media-heading no-margin">MEMBERS</h6>
-          <span counter [count]="215985" [increment]="1" [interval]="6"></span>
-        </div>
+  <div class="col-md-3" *ngIf="statusCardIsChecked.theftBatteries">
+    <div class="card top-card">
+      <div class="row card-body" style="padding:0.35rem 1.25rem !important">
+        <i class="battery-theft-icon"></i>
+        <h6 style="margin-bottom:0.45em; white-space:nowrap;margin-top:5px;margin-left:5px;">
+          {{'LABELS.THEFT_BATTERIES' | translate }}</h6>
+        <div [chart]="theftBatteries" style="height:70px;width:100%;"></div>
       </div>
-    </div>    
+    </div>
   </div>
-
-  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 bottom-30">
-    <div class="card small-info-box">
-      <div class="media">
-        <span class="media-left">
-            <i class="fa fa-money"></i>
-        </span>
-        <div class="media-body text-right">
-          <h6 class="media-heading no-margin">PURCHASES</h6>
-          <span counter [count]="7143" [increment]="1" [interval]="5"></span>
-        </div>
-      </div>
-    </div>    
-  </div>
-
-  
-
 </div>
 
-<div class="row">
 
-  <div class="col-xl-3 col-lg-6 col-md-6 bottom-30">
-    <div class="card card-primary text-center info-box">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3">
-            <span class="info-box-icon">
-              <i class="fa fa-globe"></i>
-            </span>
-          </div>
-          <div class="col-9">
-            <h6 class="no-margin">USERS GROWTH</h6>
-            <h2>7,332</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p class="no-margin text-truncate">Registrations</p>
-            <span>+1130</span>
-          </div>
-          <div class="col-6">
-            <p class="no-margin text-truncate">Bounce Rate</p>
-            <span>3.7%</span>
-          </div>
-        </div>      
-      </div>
+
+<div class="row" style="margin-top:1em;" *ngIf="statusCardIsChecked.healthState||statusCardIsChecked.chargingState||statusCardIsChecked.weakBatteries">
+  <div class="col text-center" *ngIf="batteryWithStatus">
+    <div style="border-radius:25rem;background:#ddd;padding:6px 12px 6px 18px;display:inline-block;">
+      {{'LABELS.BATTERIES_WITH' | translate}}
+      <span *ngIf="showHealthdata">{{'LABELS.HEALTH_STATE' | translate}}: <span [ngStyle]="{'color': filter.healthStatusColor}">{{filter.status}}</span></span>
+      <span *ngIf="showChargedata">{{ 'LABELS.CHARGING_STATE' | translate }}: <span [ngStyle]="{'color': filter.chargeStatusColor}">{{filter.chargeStatus}}</span></span>
+      <button class="btn btn btn-rounded" style="margin-left:1em;background-color:#eee;color: #888;font-size:0.9em;padding:3px 9px;"
+        (click)="resetDashboardFilter()"><i class="fa fa-times" style="margin-right:0.5em;"></i>{{ 'BUTTONS.CLEAR' |
+        translate }}</button>
     </div>
   </div>
-
-  <div class="col-xl-3 col-lg-6 col-md-6 bottom-30">
-     <div class="card card-danger text-center info-box">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3">
-            <span class="info-box-icon">
-              <i class="fa fa-user"></i>
-            </span>
-          </div>
-          <div class="col-9">
-            <div live-tile class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000" data-height="58">
-              <div>
-                <h6 class="no-margin">VISITS TODAY</h6>
-                <h2>12,324</h2>
-              </div>
-              <div>
-                <h6 class="no-margin">VISITS YESTERDAY</h6>
-                <h2>11,885</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p class="no-margin text-truncate">New Visitors</p>
-            <div live-tile class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000" data-height="21">
-              <div>
-                <span>1,332</span>
-              </div>
-              <div>
-                <span>20.1%</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <p class="no-margin text-truncate">Bounce Rate</p>
-            <div live-tile class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000" data-height="21">
-              <div>
-                <span>217</span>
-              </div>
-              <div>
-                <span>2.3%</span>
-              </div>
-            </div>
-          </div>
-        </div>      
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 col-md-6 bottom-30">
-     <div class="card card-warning text-center info-box">
-      <div class="card-body">            
-        <div live-tile class="live-tile" data-mode="carousel" data-direction="horizontal" data-speed="750" data-delay="4000" data-height="93">
-          <div>
-            <div class="row">
-              <div class="col-3">
-                <span class="info-box-icon">
-                  <i class="fa fa-globe"></i>
-                </span>
-              </div>
-              <div class="col-9">
-                <h6 class="no-margin">ORDERS</h6>
-                <h2>82,765</h2>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <h6 class="no-margin text-truncate">Avg. Time</h6>
-                <span>2:56</span>
-              </div>
-              <div class="col-6">
-                <h6 class="no-margin text-truncate">Last Week</h6>
-                <span>374</span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="row">
-              <div class="col-3">
-                <span class="info-box-icon">
-                  <i class="fa fa-certificate"></i>
-                </span>
-              </div>
-              <div class="col-9">
-                <h6 class="no-margin">PICKED ORDERS</h6>
-                <h2>13.8%</h2>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <h6 class="no-margin text-truncate">Basic</h6>
-                <span>3,692</span>
-              </div>
-              <div class="col-6">
-                <h6 class="no-margin text-truncate">Advanced</h6>
-                <span>1,441</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 col-md-6 bottom-30">
-    <div class="card card-success text-center info-box">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3">
-            <span class="info-box-icon">
-              <i class="fa fa-usd"></i>
-            </span>
-          </div>
-          <div class="col-9">
-            <h6 class="no-margin">TOTAL PROFIT</h6>
-            <h2>$9,448</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p class="no-margin text-truncate">Last Month</p>
-            <span>$83,541</span>
-          </div>
-          <div class="col-6">
-            <p class="no-margin text-truncate">Last Week</p>
-            <span>$17,926</span>
-          </div>
-        </div>      
-      </div>
-    </div>
-  </div> 
-
 </div>
 
-<div class="row">
+<div>
 
-    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 bottom-30">
-        <div class="card weather">
-          <img class="card-img-top" src="../assets/img/app/sky.jpg" alt="Card image cap">
-          <div class="card-img-overlay">               
-                <h2 class="no-margin">Canberra, Australia</h2>
-                <p class="card-text">TODAY {{date | date: 'dd.MM.yyyy'}}</p>
-                <div class="row">
-                    <div class="col-6 text-center">
-                      <canvas skycon [weather]="'partly-cloudy-day'" [color]="config.colors.default" width="90" height="90"></canvas>
-                    </div> 
-                    <div class="col-6 text-center">
-                        <div class="current-temperature">16°</div>
-                        <div class="degree">C</div>
+  <br>
+  <div class="row googlemap" style="margin-top:-10px;">
+    <div class="col-md-2">
+      <div class="card" data-toggle="modal" (click)="clickMapView()" *ngIf="showMap">
+        <agm-map style="height: 147px; " [latitude]="lat" [longitude]="lng" [zoom]="zoom" [fitBounds]="latlngBounds"
+          [disableDefaultUI]="true" [zoomControl]="false">
+          <agm-marker *ngFor="let location of latlongs; let i = index" [title]="location.name" [latitude]="location.moved_location_lat"
+            [longitude]="location.moved_location_lon" [iconUrl]="location.image" (markerClick)="markerClicked(infoWindow);">
+
+          </agm-marker>
+        </agm-map>
+      </div>
+      <div class="card" *ngIf="showList">
+        <table class="table table-striped">
+          <tbody style="font-size: 12px">
+            <th style="padding: 0.6rem"></th>
+            <th style="padding: 0.6rem">{{'LABELS.NAME' | translate}}</th>
+            <tr *ngFor="let data of listvar; let i=index">
+
+              <td *ngIf="i<3" style="padding: 0.4rem"><img src="{{data.image}}" height="30" width="30"></td>
+              <td *ngIf="i<3" style="padding: 0.4rem">{{data.name}}</td>
+              <!--<td *ngIf="i<3" style="padding: 0.4rem" [ngStyle]="{'color': data.statusColor}">{{data.currentState}}</td>-->
+            </tr>
+          </tbody>
+        </table>
+        <div class="row"><button class="co btn btn-info transition " style="font-size: 11px;padding: 6px;width: 100%"
+            (click)="clicklistView()">List View</button>
+        </div>
+      </div>
+      <br>
+      <div class="input-group input-group-sm" style="margin-top: -13px;">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input type="search" style="font-size: 12px;" class="form-control col-md-12 col-lg-12 col-xl-12" placeholder="{{ ('PLACE_HOLDERS.ENTER_NAME' | translate)}}"
+          (keyup)="updateFilter($event)" />
+      </div>
+      <br>
+      <div class="row">
+        <div class="form-group col-md-12" style="margin-top: -15px;"> <label class="custom-control custom-radio">
+            <input type="radio" name="isEverywhereEnabled" [(ngModel)]="isEverywhereEnabled" (click)="onEverywhereSelected()"
+              [value]="true" class="custom-control-input radio-primary">
+            <span class="custom-control-indicator"></span> <span class="custom-control-description" style="font-size: 13px;">Everywhere</span>
+          </label></div>
+        <div class="form-group col-md-12" style="margin-top: -19px;"> <label class="custom-control custom-radio">
+            <input type="radio" name="isEverywhereEnabled" [(ngModel)]="isEverywhereEnabled" (click)="onRadiusSelected()"
+              [value]="false" class="custom-control-input radio-primary">
+            <span class="custom-control-indicator"></span> <span class="custom-control-description" style="font-size: 13px;">Radius</span>
+          </label></div>
+      </div>
+      <div class="row" [hidden]="isEverywhereEnabled" style="margin-top: -15px;">
+        <div class="col-md-12">
+          <label>{{ 'LABELS.ADDRESS' | translate }}:</label>
+          <input style="margin-top: -9px;font-size: 12px;" placeholder="search for location" autocorrect="off" name="address"
+            autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [(ngModel)]="filter.address"
+            (change)="onChange()">
+        </div>
+      </div>
+      <br>
+      <div class="row" [hidden]="isEverywhereEnabled" style="margin-top: -15px;">
+        <div class="col-md-12">
+          <p-slider [(ngModel)]="filter.radius" [max]="1000" (mouseenter)="mouseEnter($event)" (mouseup)="onSliderChange()"></p-slider>
+        </div><br>
+        <div class="col-md-12">
+          <input type="number" style="text-align: center;" [(ngModel)]="filter.radius" [min]="1" [max]="1000" (keyup)="onSliderChange()" />
+          <span style="font-size: 13px;color:#50636e;">{{ 'LABELS.MILES' | translate }}</span>
+        </div>
+      </div>
+
+
+      <div class="row" style="margin-top: 3px;">
+        <div class="col-md-12">
+          <a data-toggle="collapse" href="#zone" aria-expanded="true" aria-controls="headingOne" *ngIf="showTenant">
+            <strong>{{'LABELS.ZONES' | translate}}</strong>
+            <i class="fa fa-caret-down pull-right"></i>
+          </a>
+          <div class="collapse show" id="zone" role="tabpanel" aria-labelledby="headingOne">
+            <div class="form-group" style="font-size: 12px;">
+              <div class="custom-controls-stacked" *ngFor="let data of zonesArray">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input checkbox-success" value="{{data._customInfo.c_id}}"
+                    [(ngModel)]="filter[data._customInfo.c_id]" (change)="zonesCheckbox(data._customInfo.c_id, $event.target.checked)">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">{{data._customInfo.c_name}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-10" *ngIf="showLargeList" style="padding-left:0px;">
+      <div widget class="card mb-2">
+
+        <div class="card-body widget-body">
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="input-group input-group-sm">
+                <!-- <select name="ipp" id="ipp" class='form-control col-sm-4 col-md-2 col-lg-1' (change)="pageLimit(itemsPerPage.value)" [formControl]="itemsPerPage">
+												  <option [value]="10">10</option>
+												  <option [value]="20">20</option>
+												  <option [value]="30">30</option>
+												  <option [value]="40">40</option>
+												</select> -->
+                <div class="col-sm-4 col-md-2 col-lg-1"></div>
+                <div class=" col-sm-4 col-md-6 col-lg-10"></div>
+                <!-- <span class="input-group-addon"><i class="fa fa-search"></i></span>
+									<input type="search" class="form-control col-sm-4 col-md-4 col-lg-4" placeholder="{{ ('PLACE_HOLDERS.ENTER_NAME' | translate)}}"
+										(keyup)="updateFilter($event)" /> -->
+                <div class="col-md-1">
+                  <div class="dropdown">
+                    <div class="widget-controls" style="right: -37px;top: -5px">
+                      <a class="dropdown-toggle transition setting" data-toggle="dropdown">
+                        <i class="fa fa-gear" style="font-size: 17px;color: #000e0efb; background-color:#ffffff; padding:0px 5px"></i>
+                      </a>
+
+                      <div class="dropdown-menu show" style="left: -102px;overflow-y: scroll; height: 110px;" (click)="onEvent($event)">
+                        <div class="container bootstrap" style="width: 100%;font-size: 13px">
+                          <div class="custom-controls-stacked">
+                            <!-- <label class="custom-control custom-checkbox">
+																					<input disabled type="checkbox" class="custom-control-input checkbox-secondary"  [(ngModel)]="isChecked.Name" >
+																					<span class="custom-control-indicator" disabled ></span>
+																					<span class="custom-control-description" style="font-weight:bold">{{'LABELS.NAME' | translate}}</span>
+																				</label> -->
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
+                                [(ngModel)]="isChecked.healthState">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.HEALTH_STATE'
+                                | translate}}</span>
+                            </label>
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
+                                [(ngModel)]="isChecked.state">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.STATE' |
+                                translate}}</span>
+                            </label>
+
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
+                                [(ngModel)]="isChecked.SOC">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.SOC' |
+                                translate}}</span>
+                            </label>
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
+                                [(ngModel)]="isChecked.overAll_Voltage">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.TOTAL_VOLTAGE'
+                                | translate}}</span>
+                            </label>
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
+                                [(ngModel)]="isChecked.temperature">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.TEMPERATURE'
+                                | translate}}</span>
+                            </label>
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
+                                (change)="onclickCheckbox()" [(ngModel)]="isChecked.weakCells">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.WEAK_CELLS' |
+                                translate}}</span>
+                            </label>
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
+                                [(ngModel)]="isChecked.dischargeCells">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.DISCHARGE_CYCLES'
+                                | translate}}</span>
+                            </label>
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
+                                [(ngModel)]="isChecked.zone">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.ZONE' |
+                                translate}}</span>
+                            </label>
+
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-                 <div class="row">
-                    <div class="col-6 text-center">
-                        <span><i class="fa fa-flag"></i> 26.20 km/h</span>
-                    </div> 
-                    <div class="col-6 text-center">
-                        <span><i class="fa fa-tint"></i> 59 %</span>
-                    </div>
-                </div>                  
-          </div>
-          <div class="card-body">
-              <div *ngFor="let weather of weatherData" class="row line">
-                  <div class="col-4 text-left text-truncate">{{weather.day}}</div>
-                  <div class="col-4 text-center">
-                     <canvas skycon [weather]="weather.icon" [color]="config.colors.gray" width="22" height="22"></canvas>
-                  </div>
-                  <div class="col-4 text-right">
-                      {{weather.degree}}
-                  </div>
-              </div> 
+              </div>
+              <br>
+              <div style="margin-top:-25px">
+                <ngx-datatable class="bootstrap" [rows]="rows" [columnMode]="'force'" [headerHeight]="50"
+                  [footerHeight]="50" [rowHeight]="'auto'" [externalSorting]="true" [scrollbarH]="true"
+                  [loadingIndicator]="loading" (sort)="onSort($event)" [externalPaging]="true" [count]="page.totalElements"
+                  [offset]="page.pageNumber" [limit]="page.size" (page)='setPage($event)' [sorts]="[{prop: 'name', dir: 'asc'}]">
+                  <ngx-datatable-column [name]="'LABELS.NAME' | translate " prop="name">
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                      <a [routerLink]="['/pages/dashboard/asset-info']" href (click)="assetInfo(row)">{{value}}</a>
+                      &nbsp;
+                      <i *ngIf="row.isTheft" class="battery-theft-battery"></i>
+
+                      <!--<img src="{{row.healthIcon}}">-->
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column *ngIf="isChecked.healthState" style="cursor: auto;" [name]="'LABELS.HEALTH_STATE' | translate"
+                    prop="status">
+                    <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                      <label [style.color]="row.statusColor">{{value}}</label>
+                      <a *ngIf="row.status == 'Check Required' || row.status == 'Bad'" style="cursor:pointer;"
+                        data-toggle="modal" data-target="#healthState-Modal" (click)="getBatteryHealthInfo(row)"><img
+                          src="assets/img/health-info.png" style="padding:5px;margin-bottom:5px"></a>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column *ngIf="isChecked.state" style="cursor: auto;" [name]="'LABELS.STATE' | translate"
+                    prop="currentState">
+                    <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                      <label>{{value}}</label>
+
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column *ngIf="isChecked.SOC" [name]="'LABELS.SOC' | translate" prop="soc">
+                    <ng-template ngx-datatable-cell-template let-value="value"> <label style="padding-left: 10px">{{value}}
+                      </label></ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column *ngIf="isChecked.overAll_Voltage" [name]="'LABELS.TOTAL_VOLTAGE' | translate"
+                    prop="overAll_Voltage">
+                    <ng-template ngx-datatable-cell-template let-value="value">
+                      <label style="padding-left: 27px">{{value}} </label>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column *ngIf="isChecked.temperature" [name]="'LABELS.TEMPERATURE' | translate" prop="temperature_Reading">
+                    <ng-template ngx-datatable-cell-template let-value="value"><label style="padding-left: 27px">{{value}}
+                      </label> </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column *ngIf="isChecked.weakCells" [name]="'LABELS.WEAK_CELLS' | translate" prop="weakCellCount">
+                    <ng-template ngx-datatable-cell-template let-value="value"> <label style="padding-left: 27px">{{value}}</label>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column *ngIf="isChecked.dischargeCells" [name]="'LABELS.DISCHARGE_CYCLES' | translate"
+                    prop="dischargeCyclesCount">
+                    <ng-template ngx-datatable-cell-template let-value="value"> <label style="padding-left: 27px">
+                        {{value}}</label> </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column *ngIf="isChecked.zone" [name]="'LABELS.ZONE' | translate" prop="zone_name">
+                    <ng-template ngx-datatable-cell-template let-value="value"> <label> {{value}}</label> </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column *ngIf="isChecked.reportedTime" [name]="'LABELS.REPORTED_TIME' | translate" prop="previousTimeStampMillis">
+                    <ng-template ngx-datatable-cell-template let-value="value"><label style="padding-left: 27px">{{value
+                        | date :'MM-dd-yyyy HH:mm:ss'}} </label> </ng-template>
+                  </ngx-datatable-column>
+                </ngx-datatable>
+              </div>
+            </div>
           </div>
         </div>
-    </div>
+      </div>
 
-    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 bottom-30">
-        <div widget class="card">
-            <div class="card-header">
-                <span>TO DO LIST</span>
-                <div class="widget-controls">              
-                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
-                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>                   
-                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
-                </div>        
+    </div>
+    <div class="col-md-10" *ngIf="showLargeMap" style="padding-left:0px;">
+      <agm-map style="height: 400px;" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [fitBounds]="latlngBounds"
+        [fullscreenControl]="true">
+        <agm-marker *ngFor="let location of latlongs; let i = index" [title]="location.name" [latitude]="location.moved_location_lat"
+          [longitude]="location.moved_location_lon" [iconUrl]="location.image" (markerClick)="markerClicked(infoWindow);">
+          <!--*ngIf="location.show"-->
+          <agm-info-window *ngIf="location.name !== ''" #infoWindow [disableAutoPan]="false" [maxWidth]="200">
+            <div style="overflow: hidden">
+              <button class="btn btn-rounded card-text text-white" [ngStyle]="{'background-color': location.stateColor, 'height': 23,'padding.rem' :0.3 -0.2,'cursor': 'default'}"
+                type="button">
+                {{ 'LABELS.HEALTH_STATE' | translate }}:{{(location.status === 'Check Required' ? 'Check Req.' :
+                location.status)}}</button>
+              <label>&nbsp;<br /></label>
+              <label class="inline-text" title="{{enableTenant ? location.tenat_name : ((location.zone_name === '') ? 'Not Assigned' : location.zone_name)}} - {{location.name}}"><strong
+                  *ngIf="enableTenant"> {{location.tenat_name}}</strong><strong *ngIf="showTenant">
+                  {{(location.zone_name === "") ? 'Not Assigned' : location.zone_name }}</strong><strong> -
+                  {{location.name}}</strong></label>
+              <label class="inline-text" title="{{ 'LABELS.VOLTAGE' | translate }}: {{location.overAll_Voltage}}  ({{location.capacity| number:'1.0-2'}} Ah {{ 'LABELS.CAPACITY' | translate }})">
+                {{ 'LABELS.VOLTAGE' | translate }}:
+                {{location.overAll_Voltage}} ({{location.capacity| number:'1.0-2'}} Ah {{ 'LABELS.CAPACITY' | translate
+                }})</label>
+              <label class="inline-text" title="{{ 'LABELS.CHARGING_STATE' | translate }}: {{location.currentState}}  ">
+                {{ 'LABELS.CHARGING_STATE' | translate }}: <span [ngStyle]="{'color': location.chargeStatusColor}">{{location.currentState}}
+                </span></label>
+              <label class="inline-text" title="{{ 'LABELS.TEMPERATURE' | translate }}: {{location.temperature_Reading}}">
+                {{ 'LABELS.TEMPERATURE' | translate }}: {{location.temperature_Reading}} </label>
+              <div>
+                <a [routerLink]="['/pages/dashboard/asset-info']" href (click)="assetInfo(location)"><b>{{
+                    'LABELS.MORE_INFO' | translate }}</b></a>
+              </div>
             </div>
-            <div class="card-body widget-body">
-               <az-todo></az-todo>
-            </div>
+          </agm-info-window>
+
+
+        </agm-marker>
+      </agm-map>
+    </div>
+  </div>
+</div>
+<br>
+<div class="modal fade" id="openWeakBatteries-Modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+  data-backdrop="static" data-keyboard="true" style="display: none;">
+  <div class="modal-dialog modal-lg" role="document" style="overflow-y: initial!important;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>{{'LABELS.BANKS_WITH_WEAK_CELLS' | translate }}</strong></h5>
+        <!--<h3 class="modal-title"><strong>{{weakBatteryDate}}</strong></h3>-->
+        <a class="close" data-dismiss="modal" href>&times;</a>
+      </div>
+      <div class="modal-body" style="height: 450px;overflow-y: auto;">
+        <div>
+          <p class="pull-left">{{'LABELS.DATE' | translate }}: {{weakBatteryDate}}</p>
+          <p class="text-center"> {{'LABELS.BANKS' | translate }}: {{weakBatteriesCount}}</p>
         </div>
-    </div>
+        <div class="">
+          <table id="myTable" class="table table-striped">
+            <thead>
+              <tr class="">
+                <th (click)="sortTable(0)">{{'LABELS.BATTERY_NAME' | translate }}</th>
+                <th>{{'LABELS.DISCHARGE_CYCLE' | translate }} </th>
+                <th>{{'LABELS.CELL' | translate }} </th>
+                <th>{{'LABELS.REPORTED_AT' | translate }}</th>
+              </tr>
+            </thead>
+            <tr *ngFor='let st of tableRows'>
+              <td rowspan="st.customProperties.length+1">{{st.assetName}}</td>
+              <td rowspan="st.customProperties.length+1">{{st.cycleId}}</td>
+              <td>
+                <a *ngFor='let county of st.alerts'>
+                  {{county.label}}<br>
+                </a>
+              </td>
+              <td>
+                <a *ngFor='let county of st.alerts'>
+                  {{county.timeStampMillis | date :'MM-dd-yyyy HH:mm:ss'}}
+                  <br>
+                </a>
 
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="row">
-
-   <div class="col-lg-6 col-sm-12 bottom-30">
-        <div widget class="card">
-            <div class="card-header">
-                <span>CHAT</span>
-                <div class="widget-controls">
-                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
-                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>              
-                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
-                </div>        
-            </div>
-            <div class="card-body widget-body">
-                <az-chat></az-chat>
-            </div>
-            </div>
+<div class="modal fade" id="openTheftBatteries-Modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+  data-backdrop="static" data-keyboard="true" style="display: none;">
+  <div class="modal-dialog modal-lg" role="document" style="overflow-y: initial!important;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>{{'LABELS.THEFT_BATTERY_BANKS' | translate }}</strong></h5>
+        <!--<h3 class="modal-title"><strong>{{weakBatteryDate}}</strong></h3>-->
+        <a class="close" data-dismiss="modal" href>&times;</a>
+      </div>
+      <div class="modal-body" style="height: 450px;overflow-y: auto;">
+        <div>
+          <p class="pull-left">{{'LABELS.DATE' | translate }}: {{theftBatteryDate}}</p>
+          <p class="text-center"> {{'LABELS.BANKS' | translate }}: {{theftBatteriesCount}}</p>
         </div>
+        <div class="">
+          <table id="myTable" class="table table-striped">
+            <thead>
+              <tr class="alert alert-info" style="white-space:nowrap;background-color:#007aad">
+                <th (click)="sortTable(0)">{{'LABELS.BATTERY_NAME' | translate }}</th>
+                <th>{{'LABELS.ORIGINAL_LOCATION' | translate }} </th>
+                <th>{{'LABELS.LATLNG' | translate }} </th>
 
-        <div class="col-lg-6 col-sm-12 bottom-30">
-            <div widget class="card">
-            <div class="card-header">
-                <span>PROJECT FEED</span>
-                <div class="widget-controls">
-                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
-                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>              
-                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
-                </div>        
-            </div>
-            <div class="card-body widget-body feed p-0">
-                <az-feed></az-feed>
-            </div>
+                <th>{{'LABELS.CURRENT_ADDRESS' | translate }} </th>
+                <th>{{'LABELS.DISTANCE_MOVED' | translate }} </th>
+                <!-- <th>{{'LABELS.REPORTED_AT' | translate }}</th> -->
+              </tr>
+            </thead>
+            <tr *ngFor='let st of theftBatterytableRows;let i=index'>
+              <a data-dismiss="modal" [routerLink]="['/pages/dashboard/theft-info']" (click)="getTheftInfo(i)">
+                <td rowspan="st.customProperties.length+1">{{st.assetName}}</td>
+              </a>
+              <td rowspan="st.customProperties.length+1">{{st.address}}</td>
+              <td style="text-align:center" rowspan="st.customProperties.length+1">{{st.lat}}&ensp;{{st.lon}}</td>
+              <td rowspan="st.customProperties.length+1">{{st.movedAddress}}</td>
+              <td style="text-align:center" rowspan=" st.customProperties.length+1">{{st.movedDistance}} km</td>
+
+              <!-- <td>
+								<a *ngFor='let county of st.alerts'>
+									{{county.label}}<br>
+								</a>
+							</td>
+							<td>
+								<a *ngFor='let county of st.alerts'>
+									{{county.timeStampMillis | date :'MM-dd-yyyy HH:mm:ss'}}
+									<br>
+								</a>
+
+							</td> -->
+            </tr>
+          </table>
         </div>
-    </div>
+      </div>
+      <div class="modal-footer">
 
-</div>
-
-<div class="row">
-
-   <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 bottom-30">
-    <div class="card card-primary text-center user-info-box">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-4">            
-            <img src="assets/img/profile/adam.jpg" alt="Card image">           
-          </div>
-          <div class="col-8">
-            <h6 class="text-capitalize">adam sandler</h6>
-            <h6 class="text-uppercase">developer</h6>
-            <a href="javascript:void(0);"><i class="fa fa-sign-in"></i></a> 
-          </div>
-        </div>           
       </div>
     </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 bottom-30">
-    <div class="card card-success text-center user-info-box">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-4">            
-            <img src="assets/img/profile/ashley.jpg" alt="Card image">           
-          </div>
-          <div class="col-8">
-            <h6 class="text-capitalize">ashley ahlberg</h6>
-            <h6 class="text-uppercase">support</h6>
-            <a href="javascript:void(0);"><i class="fa fa-sign-in"></i></a>            
-          </div>
-        </div>           
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 bottom-30">
-    <div class="card card-warning text-center user-info-box">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-4">            
-            <img src="assets/img/profile/michael.jpg" alt="Card image">           
-          </div>
-          <div class="col-8">
-            <h6 class="text-capitalize">michael blair</h6>
-            <h6 class="text-uppercase">menecer</h6>
-            <a href="javascript:void(0);"><i class="fa fa-sign-in"></i></a>            
-          </div>
-        </div>           
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 bottom-30">
-    <div class="card card-danger text-center user-info-box">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-4">            
-            <img src="assets/img/profile/tereza.jpg" alt="Card image">           
-          </div>
-          <div class="col-8">
-            <h6 class="text-capitalize">tereza stiles</h6>
-            <h6 class="text-uppercase">designer</h6>
-            <a href="javascript:void(0);"><i class="fa fa-sign-in"></i></a>            
-          </div>
-        </div>           
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class="row">
-  <div class="col">
-     <div widget class="card">
-          <div class="card-header">
-            <span>REVENUE</span>
-            <div class="widget-controls">                
-                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
-                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
-                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
-                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a> 
-                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
-            </div>        
-          </div>
-          <div class="card-body widget-body">
-              <az-dynamic-chart></az-dynamic-chart>
-          </div>
-        </div>
   </div>
 </div>

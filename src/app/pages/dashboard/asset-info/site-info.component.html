@@ -1,0 +1,517 @@
+<!-- Asset Info div Start-->
+<div class="row">
+     <div class="col">
+          <div widget class="card">
+               <div class="card-header" style="padding:15px 20px;color:#333!important;">
+                    <h5 style="margin-bottom:5px;">{{assetName}}</h5>
+                    <div style="font-size:0.9em;">{{assetAddress}}</div>
+               </div>
+               <div class="card-body widget-body">
+                    <div class="row">
+                         <div class="col-lg-12 col-12">
+                              <tabset [justified]="true" type="pills">
+                                   <tab id="assetDetails" (select)="onAssetDetailsTabChange('assetDetails')" style="margin-top: -16px;">
+                                        <ng-template tabHeading><i class="fa fa-info-circle" name="details"></i>&nbsp;{{'LABELS.DETAILS'
+                                             | translate}}</ng-template>
+                                        <div id="accordion" role="tablist" aria-multiselectable="true">
+
+                                             <div class="row" style="padding-top:1em;">
+                                                  <div class="col-md-4">
+                                                       <div [chart]="chart" style="height: 130px;box-shadow: 0px 0px 1px 1px rgba(33, 33, 33, 0.31);"></div>
+                                                  </div>
+                                                  <div class="col-md-4">
+                                                       <div [chart]="chart1" style="height: 130px;box-shadow: 0px 0px 1px 1px rgba(33, 33, 33, 0.31);"></div>
+                                                  </div>
+                                                  <div class="col-md-4">
+                                                       <div [chart]="chart2" style="height:130px;box-shadow: 0px 0px 1px 1px rgba(33, 33, 33, 0.31);"></div>
+                                                  </div>
+                                             </div>
+                                             <hr>
+                                             <!--Health state modal popup start-->
+
+                                             <div class="row">
+                                                  <div class="col-md-6">
+                                                       <h3 style="font-size:1.5em;margin-bottom:0.5em;border-bottom:1px solid #eee;padding-bottom:0.25em;color:#333;">Current
+                                                            Information</h3>
+
+                                                       <!-- <div *ngIf="showtheftalert" class="row" style="margin-left: 1px;"> <span class="badge badge-pill badge-info mr-1" style=" margin-bottom:5px">Onboarded location:{{currentAddress}} </span></div> -->
+                                                       <!-- <div *ngIf="showtheftalert" class="row" style="margin-left: 1px;"> <span class="badge badge-pill badge-info mr-1" style="background-color: #5a6267; margin-bottom:5px">Moved location:{{movedAddress}} </span></div> -->
+                                                       <!-- <span class="badge badge-pill badge-info mr-1">23</span> -->
+                                                       <!-- <div *ngIf="showtheftalert" class="alert alert-info" style="padding:0px 4px;color: white;font-size:12px;margin-bottom: 5px" role="alert">
+												<span>Onboarded location:</span> {{currentAddress |titlecase}}
+											</div> -->
+                                                       <!-- <div *ngIf="showtheftalert" class="alert alert-secondary" style="padding-top:0px;padding-bottom: 0px;background-color: #6a787b;color: white;font-size:12px;margin-bottom: 5px" role="alert">
+												<div class="row">
+													<span> <i class="original-location-icon " style="background-color:red">
+
+														</i>
+														<span>Moved location: {{movedAddress | titlecase}}</span></span>
+												</div>
+											</div> -->
+                                                       <div *ngIf="showtheftalert" class="col-xl-12 col-lg-4 col-md-4 col-sm-6 bottom-10"
+                                                            style="padding:10px;background-color:#F9E9EB;border:1px solid #E7AAAF;color:#AE1522;">
+                                                            <h5 style="border-bottom:1px solid #E7AAAF;padding-bottom:8px;">
+                                                                 Theft Alert!
+                                                                 <i class="battery-theft-icon" style="margin-right:5px;"></i>
+                                                            </h5>
+                                                            <div class="alert-row">
+                                                                 <div class="alert-label">Current Location:</div>
+                                                                 <div class="alert-value">{{movedAddress | titlecase}}</div>
+                                                            </div>
+                                                            <div class="alert-row">
+                                                                 <div class="alert-label">Original Location:</div>
+                                                                 <div class="alert-value">{{currentAddress |
+                                                                      titlecase}}</div>
+                                                            </div>
+                                                            <div class="alert-row">
+                                                                 <div class="alert-label">{{'LABELS.DISTANCE_MOVED' |
+                                                                      translate}}:</div>
+                                                                 <div class="alert-value">{{distance}}km</div>
+                                                            </div>
+                                                       </div>
+                                                       <div class="row">
+                                                            <div class="col">
+                                                                 <table class="table table-striped" style="font-size:14px;">
+                                                                      <tbody>
+                                                                           <!-- <tr *ngIf="showtheftalert">
+																<td>Onboarded location:</td>
+																<td>{{movedAddress}} Km</td>
+															</tr> -->
+                                                                           <!-- <tr *ngIf="showtheftalert">
+																<td>{{'LABELS.DISTANCE_MOVED' | translate}}</td>
+																<td><span class="badge badge-pill badge-danger mr-1">{{distance}} km</span></td>
+															</tr> -->
+                                                                           <tr>
+                                                                                <td>{{'LABELS.HEALTH_STATE' |
+                                                                                     translate}}</td>
+                                                                                <td style.color={{healthStateColor}}>{{healthState}}
+                                                                                     &nbsp;
+                                                                                     <a *ngIf="healthState == 'Bad' || healthState == 'Check Required'"
+                                                                                          style="cursor:pointer"
+                                                                                          data-toggle="modal"
+                                                                                          data-target="#healthStateInfo-Modal"
+                                                                                          (click)="getHealthStateInfoData()"><img
+                                                                                               src="assets/img/health-info.png"></a>
+                                                                                </td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td style="vertical-align:middle;">{{'LABELS.CYCLE_STATE'
+                                                                                     | translate}}</td>
+                                                                                <td>
+                                                                                     <div style.color={{currentStateColor}}>{{currentState}}</div>
+                                                                                     <div style="font-size:0.85em;">Duration:
+                                                                                          {{cycleDuration}}
+                                                                                          ({{millisecondsDateFormat}})</div>
+                                                                                </td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td>{{'LABELS.REPORTED_TIME' |
+                                                                                     translate}}</td>
+                                                                                <td>{{reportedTime}}</td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td>{{'LABELS.SOC' | translate}}</td>
+                                                                                <td>{{socPercentage}}</td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td>{{'LABELS.TEMPERATURE' |
+                                                                                     translate}}</td>
+                                                                                <td>{{temperature}}</td>
+                                                                           </tr>
+                                                                           <tr *ngIf="currentState == 'Discharging';true">
+                                                                                <td>{{'LABELS.TOTAL_AHOUT' |
+                                                                                     translate}}</td>
+                                                                                <td>{{ahOut}}</td>
+                                                                           </tr>
+
+                                                                           <tr *ngIf="currentState == 'Charging';true">
+                                                                                <td>{{'LABELS.TOTAL_AHIN' | translate}}
+                                                                                </td>
+                                                                                <td>{{ahOut}}</td>
+                                                                           </tr>
+
+                                                                           <tr *ngIf="currentState == 'Float';true">
+                                                                                <td>{{'LABELS.TOTAL_AHIN' | translate}}
+                                                                                </td>
+                                                                                <td>{{ahOut}}</td>
+                                                                           </tr>
+
+                                                                           <tr>
+                                                                                <td>{{'LABELS.TOTAL_VOLTAGE' |
+                                                                                     translate}}</td>
+                                                                                <td>{{voltage}}</td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td>{{'LABELS.WEAK_CELLS' | translate}}</td>
+                                                                                <td class="{{weakCellCountColor}}">
+                                                                                     {{weakCellsCount}}
+                                                                                     <!--<a style="cursor:pointer">
+																		{{weakCellsCount}}
+																	</a>-->
+                                                                                </td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td>{{'LABELS.PCV' | translate}} </td>
+                                                                                <td>{{pcv}}</td>
+                                                                           </tr>
+
+                                                                           <tr *ngIf="currentState == 'Discharging';true">
+                                                                                <td>{{'LABELS.PEAK_LOAD_CURRENT' |
+                                                                                     translate}} </td>
+                                                                                <td>{{peakLoadCurrent}}</td>
+                                                                           </tr>
+
+                                                                           <tr *ngIf="currentState == 'Charging';true">
+                                                                                <td>Peak Charge Current </td>
+                                                                                <td>{{peakLoadCurrent}}</td>
+                                                                           </tr>
+
+                                                                           <tr *ngIf="currentState == 'Discharging';true">
+                                                                                <td>{{'LABELS.AVG_LOAD_CURRENT' |
+                                                                                     translate}} </td>
+                                                                                <td>{{avgLoadCurrent}}</td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td>{{'LABELS.CUMULATIVE_AH_OUT' |
+                                                                                     translate}} </td>
+                                                                                <td>{{cumulativeAhOut}}</td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td>{{'LABELS.DISCHARGE_CELLS' |
+                                                                                     translate}} </td>
+                                                                                <td>{{dischargeCyclesCount}}</td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                                <td>{{'LABELS.ORIGINAL_BANK_DETAILS' |
+                                                                                     translate}}</td>
+                                                                                <td>{{originalVoltage}} |
+                                                                                     {{OriginalAhCapacity}} |
+                                                                                     {{installationDate}}</td>
+                                                                           </tr>
+
+                                                                      </tbody>
+                                                                 </table>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                       <h3 style="font-size:1.5em;margin-bottom:0.5em;border-bottom:1px solid #eee;padding-bottom:0.25em;color:#333;">Latest
+                                                            Cell Readings</h3>
+                                                       <div class="row" *ngFor="let row of [row1,row2,row3,row4];">
+                                                            <div class="col-sm-4" *ngFor="let cell of row;"
+                                                                 (mouseenter)="cell.isHovering=true" (mouseleave)="cell.isHovering=false"
+                                                                 style="margin-bottom:1em;">
+                                                                 <div class="card" [ngClass]="cell.statusClass">
+                                                                      <!--*ngIf = "cell.dischargeCyclesCount >= 1"-->
+                                                                      <div class="container" *ngIf="cell.displayIcon">
+                                                                           <img src="assets/img/weak_yellow.png" style="position: absolute;right:0px;top:0px;">
+                                                                           <div class="top-right" style="color:red">
+                                                                                <p style="font-size:9px;"><strong>{{cell.dischargeCyclesCount}}</strong></p>
+                                                                           </div>
+                                                                      </div>
+                                                                      <div style="font-size: 12px !important; text-align:center;padding-top:3px;">{{cell.label}}</div>
+                                                                      <div style="font-size:14px!important;white-space:nowrap;color:#666666;text-align:center;margin-top:-3px;padding-bottom:3px;">{{cell.value}}</div>
+                                                                      <img style="position: absolute;left:6px;top:25px;"
+                                                                           src="assets/img/battery_red.png">
+                                                                      <img style="position: absolute;right:6px;top:25px;"
+                                                                           src="assets/img/battery_black.png">
+                                                                      <div [hidden]="!cell.isHovering" style="background:rgba(0,0,0,0.5);cursor:pointer;text-align:center;position:absolute;top:0;left:0;right:0;bottom:0;"
+                                                                           data-toggle="modal" data-target="#trend-chart"
+                                                                           (click)="cellEnlargedView(cell)" href>
+                                                                           <i style="color: white;margin-top:12px;font-size:1.5em;"
+                                                                                class="fa fa-line-chart"></i>
+                                                                      </div>
+                                                                 </div>
+                                                            </div>
+                                                            <hr style="margin:1em;margin-top:0;width:100%;">
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                        </div>
+
+                                   </tab>
+                                   <tab id="dischargeCycles" (select)="onAssetDetailsTabChange('dischargeCycles')">
+                                        <ng-template tabHeading><i class="fa fa-undo"></i>&nbsp;{{'LABELS.DISCHARGE_CYCLES'
+                                             | translate}}</ng-template>
+                                        <div class="row">
+                                             <div class="col-md-12">
+                                                  <!--<div class="input-group input-group-sm">
+											<select name="ipp" id="ipp" class='form-control col-sm-4 col-md-2 col-lg-1' (change)="pageLimit(itemsPerPage.value)" [formControl]="itemsPerPage">
+																		<option [value]="10">10</option>
+																		<option [value]="20">20</option>
+																		<option [value]="30">30</option>
+																		<option [value]="40">40</option>
+																	  </select>
+											<div class="col-sm-10 col-md-10 col-lg-10"></div>
+
+											<div class="col-md-1">
+											</div>
+										</div>-->
+                                                  <ngx-datatable class="bootstrap" [rows]="rowsFordisChargeCycles"
+                                                       [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0"
+                                                       [rowHeight]="'auto'" [externalSorting]="true" [scrollbarH]="true"
+                                                       [loadingIndicator]="loading" (sort)="onSortDischarge($event)"
+                                                       [externalPaging]="true" [count]="page.totalElements" [offset]="page.pageNumber"
+                                                       [limit]="page.size" (page)='setPage($event)' [sorts]="[{prop: 'cycleID', dir: 'asc'}]">
+
+                                                       <ngx-datatable-column [name]="'LABELS.DISCHARGE_CYCLE_ID' | translate"
+                                                            prop="cycleID">
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex"
+                                                                 let-value="value" let-row="row">
+                                                                 <a href (click)="charge_dischargeCycleChartInfo(row)"
+                                                                      style="cursor:pointer" data-toggle="modal"
+                                                                      data-target="#AH-Voltage-chart">{{value}}</a>
+                                                            </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column [name]="'LABELS.PEAK_LOAD_CURRENT' | translate"
+                                                            prop="peakLoadCurrent">
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex"
+                                                                 let-value="value" let-row="row">
+                                                                 <label [style.color]="row.capacityColor">{{value}}
+                                                                 </label>
+                                                            </ng-template>
+                                                       </ngx-datatable-column>
+
+                                                       <ngx-datatable-column style="cursor: auto;" [name]="'LABELS.START_TIME' | translate "
+                                                            prop="startTimeMillis">
+                                                            <ng-template ngx-datatable-cell-template let-value="value">
+                                                                 {{value | date:'dd MMM HH:mm:ss'}} </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column style="cursor: auto;" [name]="'LABELS.END_TIME' | translate "
+                                                            prop="endTimeMillis">
+                                                            <ng-template ngx-datatable-cell-template let-value="value">
+                                                                 {{value | date:'dd MMM HH:mm:ss'}} </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column style="cursor: auto;" [name]="'LABELS.DURATION' | translate "
+                                                            prop="duration">
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex"
+                                                                 let-value="value" let-row="row">
+                                                                 <label [style.color]="row.batteryBackUpColor">{{value}}
+                                                                 </label>
+                                                            </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column [name]="'LABELS.AH_OUT_TOTAL' | translate"
+                                                            prop="ahOutTotal">
+                                                            <ng-template ngx-datatable-cell-template let-value="value">
+                                                                 {{value}} </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column style="cursor: auto;" [name]="'LABELS.SOC' | translate"
+                                                            prop="soc">
+                                                            <ng-template ngx-datatable-cell-template let-value="value"
+                                                                 let-row="row"> {{value}} </ng-template>
+                                                       </ngx-datatable-column>
+                                                  </ngx-datatable>
+                                                  <br>
+
+                                             </div>
+                                             <br />
+
+                                        </div>
+                                   </tab>
+                                   <tab id="chargeCycles" (select)="onAssetDetailsTabChange('chargeCycles')">
+                                        <ng-template tabHeading><i class="fa fa-spinner"></i>&nbsp;{{'LABELS.CHARGE_CYCLES'
+                                             | translate}}</ng-template>
+                                        <div class="row">
+                                             <div class="col-md-12">
+                                                  <!--<div class="input-group input-group-sm">
+											<select name="ipp" id="ipp" class='form-control col-sm-4 col-md-2 col-lg-1' (change)="pageLimit(itemsPerPage.value)" [formControl]="itemsPerPage">
+																			<option [value]="10">10</option>
+																			<option [value]="20">20</option>
+																			<option [value]="30">30</option>
+																			<option [value]="40">40</option>
+																		  </select>
+											<div class="col-sm-10 col-md-10 col-lg-10"></div>
+
+											<div class="col-md-1">
+											</div>
+										</div>-->
+                                                  <ngx-datatable class="bootstrap" [rows]="rowsForChargeCycles"
+                                                       [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0"
+                                                       [rowHeight]="'auto'" [externalSorting]="true" [scrollbarH]="true"
+                                                       [loadingIndicator]="loading" (sort)="onSortCharge($event)"
+                                                       [externalPaging]="true" [count]="page.totalElements" [offset]="page.pageNumber"
+                                                       [limit]="page.size" (page)='setPage($event)' [sorts]="[{prop: '_customInfo.cycleID', dir: 'asc'}]">
+                                                       <ngx-datatable-column [name]="'LABELS.CHARGE_CYCLE_ID' | translate "
+                                                            prop="cycleID">
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex"
+                                                                 let-value="value" let-row="row">
+                                                                 <a href (click)="charge_dischargeCycleChartInfo(row)"
+                                                                      style="cursor:pointer" data-toggle="modal"
+                                                                      data-target="#AH-Voltage-chart">{{value}}</a>
+                                                            </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column [name]="'LABELS.PEAK_CHARGE_CURRENT' | translate "
+                                                            prop="peakChargeCurrent">
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex"
+                                                                 let-value="value" let-row="row">
+                                                                 <label [style.color]="row.capacityColor">{{value}}
+                                                                 </label>
+                                                            </ng-template>
+                                                       </ngx-datatable-column>
+
+                                                       <ngx-datatable-column style="cursor: auto;" [name]="'LABELS.START_TIME' | translate "
+                                                            prop="startTimeMillis">
+                                                            <ng-template ngx-datatable-cell-template let-value="value">
+                                                                 {{value | date:'dd MMM HH:mm:ss'}} </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column style="cursor: auto;" [name]="'LABELS.END_TIME' | translate "
+                                                            prop="endTimeMillis">
+                                                            <ng-template ngx-datatable-cell-template let-value="value">
+                                                                 {{value | date:'dd MMM HH:mm:ss'}} </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column style="cursor: auto;" [name]="'LABELS.DURATION' | translate "
+                                                            prop="duration">
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex"
+                                                                 let-value="value" let-row="row">
+                                                                 <label [style.color]="row.batteryBackUpColor">{{value}}
+                                                                 </label>
+                                                            </ng-template>
+                                                       </ngx-datatable-column>
+                                                       <ngx-datatable-column [name]="'LABELS.AH_IN_TOTAL' | translate "
+                                                            prop="ahInTotal">
+                                                            <ng-template ngx-datatable-cell-template let-value="value">
+                                                                 {{value}} </ng-template>
+                                                       </ngx-datatable-column>
+
+                                                       <ngx-datatable-column style="cursor: auto;" [name]="'LABELS.SOC' | translate"
+                                                            prop="soc">
+                                                            <ng-template ngx-datatable-cell-template let-value="value"
+                                                                 let-row="row">
+                                                                 {{value}}
+                                                            </ng-template>
+                                                       </ngx-datatable-column>
+                                                  </ngx-datatable>
+                                                  <br>
+
+                                             </div>
+                                             <br />
+
+                                        </div>
+                                   </tab>
+                              </tabset>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+<!-- Asset Info End-->
+
+<!-- Trend chart Modal Popup Start-->
+<div class="modal fade" id="trend-chart" tabindex="-1" role="dialog" aria-labelledby="modal-label" data-backdrop="static"
+     data-keyboard="true" style="display: none;">
+     <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+               <div class="modal-header">
+
+                    <h3 class="modal-title"><strong>{{labelName}}</strong></h3>
+                    <a class="close" data-dismiss="modal" (click)="closeWindow()" href>&times;</a>
+               </div>
+               <div class="modal-body">
+                    <form class="form-horizontal" [formGroup]="assetInfoForm" ngOnInit="getSensorReadings(assetInfoForm, false)">
+                         <div [chart]="sensorReadingsGraph" style="height:280px">
+                         </div>
+                    </form>
+                    <!-- <hr class="line-dashed line-half" /> -->
+
+               </div>
+               <div class="modal-footer">
+
+               </div>
+          </div>
+     </div>
+</div>
+<!-- Trend chart Modal Popup End-->
+
+<!-- AH Out and Volatge Chart Modal Popup Start-->
+<div class="modal fade" id="AH-Voltage-chart" tabindex="-1" role="dialog" aria-labelledby="modal-label" data-backdrop="static"
+     data-keyboard="true" style="display: none;">
+     <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+               <div class="modal-header">
+
+                    <h3 class="modal-title"><strong>{{chargeTypeName}}</strong></h3>
+                    <a class="close" data-dismiss="modal" (click)="closeWindow()" href>&times;</a>
+               </div>
+               <div class="modal-body">
+
+                    <div [chart]="AHOUTChartGraph" style="height:250px">
+                    </div>
+                    <div [chart]="VoltageChartGraph" style="height:250px">
+                    </div>
+               </div>
+               <div class="modal-footer">
+               </div>
+          </div>
+     </div>
+</div>
+<!-- AH Out and Volatge Chart Modal Popup Start-->
+<div class="modal fade" id="healthStateInfo-Modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+     data-backdrop="static" data-keyboard="true" style="display: none;">
+     <div class="modal-dialog modal-md" role="document">
+          <div class="modal-content">
+               <div class="modal-header" style="padding:6px 15px">
+
+                    <h5 class="modal-title"><strong>{{'LABELS.STATE_OF_HEALTH' | translate}}</strong></h5>
+                    <a class="close" data-dismiss="modal" (click)="closeWindow()" href>&times;</a>
+               </div>
+               <div class="modal-body text-center" style="padding-bottom:0px;">
+                    <p class="pull-left">{{'LABELS.BANK' | translate}}: <strong>{{healthbatteryBank}}</strong></p>
+                    <p class="pull-right"> {{'LABELS.TIME' | translate}}: <strong>{{health_batteryReportedTime | date
+                              :'MM-dd-yyyy HH:mm:ss'}}</strong></p>
+               </div>
+               <div class="modal-body text-center" style="padding-top:0px;">
+                    <div class="row" style="text-align:left">
+                         <div class="col-md-4">
+                              <p [ngStyle]="{'border-left': '5px solid','border-color':voltageColor,'margin-bottom':'0px','line-height': '18px'}">
+                                   <span style="margin-left: 10px;">{{'LABELS.VOLTAGE' | translate}}</span><br><span
+                                        *ngIf="showbadcells" style="margin-left: 10px;" title=" {{badcellPostfixNo}}">
+                                        <span *ngFor=" let data of badcellPostfixNo2">Cell{{data}},</span>.. </span></p>
+                         </div>
+                         <div class="col-md-4">
+                              <p [ngStyle]="{'border-left': '5px solid','border-color':socColor,'margin-bottom':'0px','line-height': '18px'}">
+                                   <span style="margin-left: 10px;">{{'LABELS.SOC' | translate}}</span><br> <b style="margin-left: 10px;">{{socReading}}%</b></p>
+                         </div>
+                         <div class="col-md-4">
+                              <p [ngStyle]="{'border-left': '5px solid','border-color':temperatureColor,'margin-bottom':'0px','line-height': '18px'}">
+                                   <span style="margin-left: 10px;">{{'LABELS.TEMPERATURE' | translate}}</span><br> <b
+                                        style="margin-left: 10px;">{{temperatureReading}}°C</b></p>
+                         </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div *ngIf="showHealthCells">
+                         <div class="row" *ngFor="let healthRow of [healthrow1,healthrow2,healthrow3,healthrow4];">
+                              <div class="col-sm-4" *ngFor="let cell of healthRow;" style="margin-bottom:1em;">
+                                   <div class="card " [ngClass]="cell.statusClass">
+                                        <div style="font-size: 12px !important; text-align:center;padding-top:0px;">{{cell.sensorId}}</div>
+                                        <div style="font-size:14px!important;white-space:nowrap;color:#666666;text-align:center;margin-top:-6px;padding-bottom:0px;">{{cell.value
+                                             | number : '1.0-3'}}</div>
+                                        <img style="position: absolute;left:6px;top:15px;" src="assets/img/battery_red.png">
+                                        <img style="position: absolute;right:6px;top:15px;" src="assets/img/battery_black.png">
+                                   </div>
+                              </div>
+                              <hr style="margin:1em;margin-top:0;width:100%;">
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4">
+                              <i class="fa fa-square" style="color:green"></i>
+                              <span style="margin-bottom:0rem;" class="card-text">{{'LABELS.GOOD' | translate}}</span>
+                         </div>
+
+                         <div class="col-md-4">
+                              <i class="fa fa-square" style="color: red"></i>
+                              <span style="margin-bottom:0rem;" class="card-text">{{'LABELS.BAD' | translate}}</span>
+                         </div>
+
+                         <div class="col-md-4">
+                              <i class="fa fa-square" style="color: rgb(255, 153, 0)"></i>
+                              <span style="margin-bottom:0rem;" class="card-text">{{'LABELS.CHECK_REQUIRED' |
+                                   translate}}</span>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>

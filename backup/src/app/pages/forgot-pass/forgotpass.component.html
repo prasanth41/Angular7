@@ -1,0 +1,36 @@
+<div class="forgot-pass-container">
+     <div class="col-xl-4 col-md-6 col-10 mx-auto">
+          <div class="card">
+               <div class="card-body text-center">
+                    <img src="assets/img/logo/logo_full_login.png" alt="Battery Monitoring" />
+                    <hr>
+                    <a class="btn btn-link transition bottom-15">
+                         <b>{{ ('TITLES.FORGOT_PASSWORD' | translate).toUpperCase() }}</b></a>
+
+                    <form [formGroup]="forgotPasswordForm" class="text-left">
+                         <p class="help-block text-left">
+                              {{ 'INFO.ENTER_USER_NAME_SEND_PASSWORD_LINK' | translate }}
+                         </p>
+                         <div class="form-group">
+                              <input [formControl]="email" class="form-control checking-field" placeholder="Enter Username (Mandatory)"
+                                   type="text">
+                              <span class="help-block text-danger" *ngIf="forgotPasswordForm.get('email').touched && forgotPasswordForm.get('email').hasError('required')">{{
+                                   'INFO.EMAIL_REQUIRED' | translate }}</span>
+                              <span class="help-block text-danger" *ngIf="forgotPasswordForm.get('email').touched && forgotPasswordForm.get('email').hasError('invalidEmail')">{{
+                                   'INFO.INVALID_EMAIL' | translate }}</span>
+                         </div>
+                         <div class="form-group text-left mt-20">
+                              <p class="m-0">
+                                   <button class="btn btn-danger btn-sm" [routerLink]="['/login']"><i class="fa fa-arrow-left"></i>
+                                        {{ 'BUTTONS.BACK' | translate }}</button>
+                                   <button type="submit" class="btn btn-primary btn-sm pull-right" [disabled]="!forgotPasswordForm.valid"
+                                        (click)="forgotPassword(forgotPasswordForm.value)"><i class="fa fa-arrow-right"></i>
+                                        {{ 'BUTTONS.SUBMIT' | translate }}</button>
+                              </p>
+                         </div>
+                    </form>
+
+               </div>
+          </div>
+     </div>
+</div>
