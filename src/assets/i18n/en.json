@@ -284,6 +284,17 @@
     "ACTION": "Action",
     "DEVICE_NAME": "Device Name"
   },
+  "PROFILE": {
+    "SUCCESS": {
+      "UPDATION_SUCCESS": "Your changes has been saved",
+      "UPDATION_WITH_PASSWORD": "Updated user details with password successfully",
+      "UPDATION_WITHOUT_PASSWORD": "Updated user details without password successfully"
+    },
+    "ERROR": {
+      "UPDATION_FAIL": "Failed to save your changes",
+      "IMAGE_UPDATION_FAIL": "Failed to upload image"
+    }
+  },
   "ANALYTICS": {
     "TITLE": {
       "SENSORS_BY_ISSUES": "Sensors by Issues",

@@ -1,0 +1,69 @@
+<div class="row">
+     <div class="col">
+          <div widget class="card">
+               <div class="card-header">
+                    <strong></strong>&nbsp;
+                    <div class="widget-controls">
+                         <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                         <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                         <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                         <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                         <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+               </div>
+
+               <div class="card-body widget-body" style="margin-top: -14px;">
+                    <div class="row">
+                         <div class="col-lg-12 col-12">
+                              <div class="row">
+                                   <div class="col-md-4">
+                                        <label>{{'LABELS.BUSINESS_RULES' | translate}}:</label>
+                                        <select class="form-control" [(ngModel)]="rules" (change)="changeRules()">
+                                             <option *ngFor="let rules of options" [value]="rules.option">
+                                                  {{rules.view}}
+                                             </option>
+                                        </select>
+                                   </div>
+                                   <div class="col-md-6"></div>
+                                   <div class="col-md-2">
+                                        <label for="refresh">&nbsp;</label>
+                                        <br />
+                                        <button type="submit" (click)="deployRules()" class="btn btn-primary btn-sm"
+                                             style="float: right;">{{'BUTTONS.APPLY_RULES' | translate}}</button>
+                                   </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                   <iframe *ngIf="businessRulesUrl" [src]="businessRulesUrl" style="width:100%; height:80vh;"></iframe>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+
+     <ng-template #customLoadingTemplate>
+          <div class="loader-overlay">
+               <div class="spinner">
+                    <div class="spin-outer" id="preloader">
+                         <div class="spin-container">
+                              <div class="spin-inner">
+                                   <div class="spin-cube-grid">
+                                        <div class="spin-cube spin-cube1" style="background: url('assets/img/logo/cube-1.jpg');  background-size: cover;"></div>
+                                        <div class="spin-cube spin-cube2" style="background: url('assets/img/logo/cube-2.jpg');  background-size: cover;"></div>
+                                        <div class="spin-cube spin-cube3" style="background: url('assets/img/logo/cube-3.jpg');  background-size: cover;"></div>
+                                        <div class="spin-cube spin-cube4" style="background: url('assets/img/logo/cube-4.jpg');  background-size: cover;"></div>
+                                        <div class="spin-cube spin-cube5" style="background: url('assets/img/logo/cube-5.jpg'); background-size: cover;"></div>
+                                        <div class="spin-cube spin-cube6" style="background: url('assets/img/logo/cube-6.jpg'); background-size: cover;"></div>
+                                        <div class="spin-cube spin-cube7" style="background: url('assets/img/logo/cube-7.jpg'); background-size: cover;"></div>
+                                        <div class="spin-cube spin-cube8" style="background: url('assets/img/logo/cube-8.jpg'); background-size: cover;"></div>
+                                        <div class="spin-cube spin-cube9" style="background: url('assets/img/logo/cube-9.jpg'); background-size: cover;"></div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </ng-template>
+     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '10px' }" [template]="customLoadingTemplate"></ngx-loading>

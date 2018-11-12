@@ -28,7 +28,8 @@ export class NavbarService {
 
      public getMobileAppUrls(data): Observable<any> {
           var Headers = this.getMobileAppUrlheaders;
-          return this.http.post<any>(this.CONFIG_DATA.SERVER_ROOT_URL + "buckets/AM_MobileApps/query", data, {
+          alert(this.CONFIG_DATA.Mobile_App_url)
+          return this.http.post<any>(this.CONFIG_DATA.Mobile_App_url + "buckets/AM_MobileApps/query", data, {
                headers: Headers
           }).pipe();
      }

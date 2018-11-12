@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -24,7 +25,7 @@ export const routes = [
           InternationalPhoneNumberModule,
           FormsModule,
           ReactiveFormsModule,
-          // SharedModule,
+          SharedModule,
           RouterModule.forChild(routes),
           TabsModule.forRoot(),
           TranslateModule

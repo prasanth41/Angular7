@@ -22,6 +22,7 @@ export class UsersComponent implements OnInit {
     totalElements: 0,
     pageNumber: 0,
   };
+  public loading = false;
   private nextPageKey: string = '200/';
   private activePage: number = 0;
   private start: number = 0;
@@ -99,7 +100,9 @@ export class UsersComponent implements OnInit {
     }
 
     // api call for get users data
+    this.loading = true;
     this.usersService.getUsers(input).subscribe((result: any) => {
+      this.loading = false;
       this.logger.info('USERS', 'GetUsers', "results:" + JSON.stringify(result));
       let response: boolean = result.returnedValue.status;
       let itemsTotal = result.returnedValue.data.recordsTotal;
@@ -125,7 +128,7 @@ export class UsersComponent implements OnInit {
       this.page['size'] = this.page['size'];
       this.page['totalElements'] = itemsTotal;
       this.rows.length = itemsTotal;
-    });
+    }, err => this.loading = false);
   }
 
   private textChanged(event) {
@@ -237,7 +240,9 @@ export class UsersComponent implements OnInit {
 
     if (this.Add_or_Edit_User === 'Add') {
       this.logger.info('USERS', 'AddUser', "input:" + JSON.stringify(input));
+      this.loading = true
       this.usersService.addUser(input).subscribe((result: any) => {
+        this.loading = false;
         this.logger.info('USERS', 'AddUser', "results:" + JSON.stringify(result));
         jQuery("#add_edit-modal").modal("hide");
         this.translate.get('USERS.SUCCESS.CREATION_SUCCESS').subscribe((res: string) => {
@@ -257,11 +262,13 @@ export class UsersComponent implements OnInit {
 
         //   });
         // } else { this.loadData(); }
-      });
+      }, err => this.loading = false);
     } else if (this.Add_or_Edit_User === 'Edit') {
       input["userEmailToUpdate"] = value.email;
       this.logger.info('USERS', 'EditUser', "input:" + JSON.stringify(input));
+      this.loading = true;
       this.usersService.updateUser(input).subscribe((result: any) => {
+        this.loading = false;
         this.logger.info('USERS', 'EditUser', "results:" + JSON.stringify(result));
         jQuery("#add_edit-modal").modal("hide");
         this.translate.get('USERS.SUCCESS.UPDATION_SUCCESS').subscribe((res: string) => {
@@ -279,7 +286,7 @@ export class UsersComponent implements OnInit {
           //     }
           //   });
         } else { this.loadData(); }
-      });
+      }, err => this.loading = false);
     }
   }
 
@@ -296,14 +303,16 @@ export class UsersComponent implements OnInit {
   // api call for user deletion
   public deleteUser() {
     const input = { userToken: this.token, userEmailToDelete: this.userEmailToDelete };
+    this.loading = true;
     this.usersService.deleteUser(input).subscribe((result: any) => {
+      this.loading = false
       this.logger.info('USERS', 'DeleteUser', "results:" + JSON.stringify(input));
       this.translate.get('USERS.SUCCESS.DELETION_SUCCESS').subscribe((res: string) => {
         this.toastrService.success(res, '');
       });
       jQuery("#delete-modal").modal("hide");
       this.loadData();
-    });
+    }, err => this.loading = false);
   }
 
 

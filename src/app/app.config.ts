@@ -20,6 +20,7 @@ export class AppConfig {
     let appId = environment.app.id;
     let appKey = environment.app.key;
     let url = environment.app.url;
+    let murl = environment.app.murl
     let deploymentUrl = environment.rules.url;
     let rulesurl = environment.rules.url;
     let application = environment.rules.application;
@@ -38,6 +39,7 @@ export class AppConfig {
       APP_ID: appId,
       APP_KEY: appKey,
       APP_URL: url,
+      Mobile_App_url: murl,
       SERVER_URL: url + "/apps/" + appId + "/server-code/versions/current/",
       SERVER_ROOT_URL: url + '/apps/' + appId + '/',
       KAFKA_SERVER_URL: kafkaUrl + "/apps/" + appId + "/",

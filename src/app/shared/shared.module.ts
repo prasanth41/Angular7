@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TranslateService } from '@ngx-translate/core';
 import { httpInterceptorProviders } from '../services/http-interceptors/index';
+import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -33,6 +34,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       serverLogLevel: NgxLoggerLevel.OFF,
       level: NgxLoggerLevel.TRACE
     }),
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.none,
+    }),
     FormsModule,
     ReactiveFormsModule,
     NgxDatatableModule
@@ -43,7 +47,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgHttpLoaderModule,
     TranslateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxLoadingModule
   ],
   providers: [httpInterceptorProviders]
 })

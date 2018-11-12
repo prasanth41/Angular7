@@ -11,7 +11,6 @@ import { TenantUsersComponent } from './tenant-users.component';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { AgmCoreModule } from '@agm/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-
 export const routes = [
      { path: '', component: TenantUsersComponent, pathMatch: 'full' }
 ];
@@ -27,8 +26,9 @@ export const routes = [
           RouterModule.forChild(routes),
           InternationalPhoneNumberModule,
           TranslateModule,
+          SharedModule,
           AgmCoreModule.forRoot({
-               apiKey: 'AIzaSyDe_oVpi9eRSN99G4o6TwVjJbFBNr58NxE',
+               apiKey: 'AIzaSyCx_ZaqWDu6leZ7ffeIz5sG9qrN5s4KFF0',
                libraries: ["places"]
           }),
      ],

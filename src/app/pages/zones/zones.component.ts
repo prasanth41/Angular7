@@ -42,6 +42,7 @@ export class ZonesComponent implements OnInit {
      private token = "";
      CONFIG_DATA: any;
      private session: Session;
+     public loading = false;
      constructor(private http: HttpClient, private translate: TranslateService, private formBuilder: FormBuilder, public toastrService: ToastrService, private _zonesService: ZonesService, private logger: NGXLogger) {
           this.session = JSON.parse(sessionStorage.getItem('sessionInfo'));
           this.token = this.session.token;
@@ -81,7 +82,9 @@ export class ZonesComponent implements OnInit {
           this.logger.info('ZONEINFO', 'GetZones', "input:" + JSON.stringify(input));
 
           // api call for get users data
+          this.loading = true;
           this._zonesService.getZones(input).subscribe((result: any) => {
+               this.loading = false;
                let itemsTotal = result.returnedValue.data.recordsTotal;
                let zones: any[] = result.returnedValue.data.records;
                let zonesArray: any[] = [];
@@ -114,7 +117,8 @@ export class ZonesComponent implements OnInit {
                this.page['size'] = this.page['size'];
                this.page['totalElements'] = itemsTotal;
                this.rows.length = itemsTotal;
-          });
+
+          }, err => this.loading = false);
      }
 
      //Search based on username
@@ -205,14 +209,15 @@ export class ZonesComponent implements OnInit {
                          c_name: value.zoneName
                     }
                }
+               this.loading = true;
                this._zonesService.addZone(addData).subscribe((result: any) => {
+                    this.loading = false;
                     this.translate.get('ZONES.SUCCESS.CREATION_SUCCESS').subscribe((res: string) => {
                          this.toastrService.success(res, '');
                     });
                     jQuery("#addZone-modal").modal("hide");
                     this.loadData();
-
-               });
+               }, err => this.loading = false);
           } else if (this.Add_or_Edit === "Edit") {
                let editData = {
                     userToken: this.token,
@@ -222,12 +227,14 @@ export class ZonesComponent implements OnInit {
                     c_id: this.zoneId
                }
                // Update Zone service call
+               this.loading = true;
                this._zonesService.updateZone(editData).subscribe((result: any) => {
+                    this.loading = false;
                     let response: boolean = result.returnedValue.status;
 
                     this.translate.get('ZONES.SUCCESS.UPDATION_SUCCESS').subscribe((res: string) => {
                          this.toastrService.success(res, '');
-                    });
+                    }, err => this.loading = false);
                     jQuery("#addZone-modal").modal("hide");
                     this.loadData();
 
@@ -243,11 +250,13 @@ export class ZonesComponent implements OnInit {
                userToken: this.token,
                c_id: this.zoneId
           };
+          this.loading = true;
           this._zonesService.deleteZone(deleteData).subscribe((result: any) => {
+               this.loading = false;
                let response: boolean = result.returnedValue.status;
                this.translate.get('ZONES.SUCCESS.DELETION_SUCCESS').subscribe((res: string) => {
                     this.toastrService.success(res, '');
-               });
+               }, err => this.loading = false);
                jQuery("#deleteZone-Modal").modal("hide");
                this.loadData();
 

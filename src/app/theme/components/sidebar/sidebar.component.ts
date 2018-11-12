@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation, ElementRef, HostListener } from '
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AppState } from "../../../app.state";
 import { SidebarService } from './sidebar.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'az-sidebar',

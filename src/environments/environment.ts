@@ -9,7 +9,8 @@ export const environment = {
   app: {
     id: "isal37r1nd3r",
     key: "573279fc3b194ff5bec91d8161ea7bcd",
-    url: "https://api-staging-saus.internal.kii.com/api/apps/isal37r1nd3r/server-code/versions/current"
+    url: "https://api-staging-saus.internal.kii.com/api/apps/isal37r1nd3r/server-code/versions/current",
+    murl: "https://api-staging-saus.internal.kii.com/api/apps/isal37r1nd3r/"
   },
   rules: {
     "url": "//test.kiibeta.com",

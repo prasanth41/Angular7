@@ -294,6 +294,10 @@ a {
   border-radius: 15px !important;
 }
 
+.custom-checkbox .custom-control-input:checked~.custom-control-indicator {
+  background-color: green
+}
+
 /*search placeholder in italic*/
 ::-webkit-input-placeholder {
   font-style: italic;

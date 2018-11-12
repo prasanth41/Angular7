@@ -54,7 +54,7 @@ export class AuthGuard {
     BrowserModule,
     BrowserAnimationsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDe_oVpi9eRSN99G4o6TwVjJbFBNr58NxE',
+      apiKey: 'AIzaSyCx_ZaqWDu6leZ7ffeIz5sG9qrN5s4KFF0',
       libraries: ["places"]
     }),
     ToastrModule.forRoot(),

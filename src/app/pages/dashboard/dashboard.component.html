@@ -1,4 +1,5 @@
 <!--delete asset modal popup start-->
+
 <div class="modal fade" id="deleteAsset-Modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" data-backdrop="static"
   data-keyboard="true" style="display: none;">
   <div class="modal-dialog modal-md" role="document">
@@ -419,7 +420,7 @@
                   [footerHeight]="50" [rowHeight]="'auto'" [externalSorting]="true" [scrollbarH]="true"
                   [loadingIndicator]="loading" (sort)="onSort($event)" [externalPaging]="true" [count]="page.totalElements"
                   [offset]="page.pageNumber" [limit]="page.size" (page)='setPage($event)' [sorts]="[{prop: 'name', dir: 'asc'}]">
-                  <ngx-datatable-column [name]="'LABELS.NAME' | translate " prop="name">
+                  <ngx-datatable-column [name]="'Name'" prop="name">
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                       <a [routerLink]="['/pages/dashboard/asset-info']" href (click)="assetInfo(row)">{{value}}</a>
                       &nbsp;
@@ -428,7 +429,7 @@
                       <!--<img src="{{row.healthIcon}}">-->
                     </ng-template>
                   </ngx-datatable-column>
-                  <ngx-datatable-column *ngIf="isChecked.healthState" style="cursor: auto;" [name]="'LABELS.HEALTH_STATE' | translate"
+                  <ngx-datatable-column *ngIf="isChecked.healthState" style="cursor: auto;" [name]="'Health State'"
                     prop="status">
                     <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
                       <label [style.color]="row.statusColor">{{value}}</label>
@@ -437,41 +438,38 @@
                           src="assets/img/health-info.png" style="padding:5px;margin-bottom:5px"></a>
                     </ng-template>
                   </ngx-datatable-column>
-                  <ngx-datatable-column *ngIf="isChecked.state" style="cursor: auto;" [name]="'LABELS.STATE' | translate"
-                    prop="currentState">
+                  <ngx-datatable-column *ngIf="isChecked.state" style="cursor: auto;" [name]="'State' " prop="currentState">
                     <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
                       <label>{{value}}</label>
 
                     </ng-template>
                   </ngx-datatable-column>
 
-                  <ngx-datatable-column *ngIf="isChecked.SOC" [name]="'LABELS.SOC' | translate" prop="soc">
+                  <ngx-datatable-column *ngIf="isChecked.SOC" [name]="'%SOC'" prop="soc">
                     <ng-template ngx-datatable-cell-template let-value="value"> <label style="padding-left: 10px">{{value}}
                       </label></ng-template>
                   </ngx-datatable-column>
-                  <ngx-datatable-column *ngIf="isChecked.overAll_Voltage" [name]="'LABELS.TOTAL_VOLTAGE' | translate"
-                    prop="overAll_Voltage">
+                  <ngx-datatable-column *ngIf="isChecked.overAll_Voltage" [name]="'Voltage'" prop="overAll_Voltage">
                     <ng-template ngx-datatable-cell-template let-value="value">
                       <label style="padding-left: 27px">{{value}} </label>
                     </ng-template>
                   </ngx-datatable-column>
-                  <ngx-datatable-column *ngIf="isChecked.temperature" [name]="'LABELS.TEMPERATURE' | translate" prop="temperature_Reading">
+                  <ngx-datatable-column *ngIf="isChecked.temperature" [name]="'Temperature'" prop="temperature_Reading">
                     <ng-template ngx-datatable-cell-template let-value="value"><label style="padding-left: 27px">{{value}}
                       </label> </ng-template>
                   </ngx-datatable-column>
-                  <ngx-datatable-column *ngIf="isChecked.weakCells" [name]="'LABELS.WEAK_CELLS' | translate" prop="weakCellCount">
+                  <ngx-datatable-column *ngIf="isChecked.weakCells" [name]="'Weak Cells' " prop="weakCellCount">
                     <ng-template ngx-datatable-cell-template let-value="value"> <label style="padding-left: 27px">{{value}}</label>
                     </ng-template>
                   </ngx-datatable-column>
-                  <ngx-datatable-column *ngIf="isChecked.dischargeCells" [name]="'LABELS.DISCHARGE_CYCLES' | translate"
-                    prop="dischargeCyclesCount">
+                  <ngx-datatable-column *ngIf="isChecked.dischargeCells" [name]="'Discharge Cycles'" prop="dischargeCyclesCount">
                     <ng-template ngx-datatable-cell-template let-value="value"> <label style="padding-left: 27px">
                         {{value}}</label> </ng-template>
                   </ngx-datatable-column>
-                  <ngx-datatable-column *ngIf="isChecked.zone" [name]="'LABELS.ZONE' | translate" prop="zone_name">
+                  <ngx-datatable-column *ngIf="isChecked.zone" [name]="'Zone'" prop="zone_name">
                     <ng-template ngx-datatable-cell-template let-value="value"> <label> {{value}}</label> </ng-template>
                   </ngx-datatable-column>
-                  <ngx-datatable-column *ngIf="isChecked.reportedTime" [name]="'LABELS.REPORTED_TIME' | translate" prop="previousTimeStampMillis">
+                  <ngx-datatable-column *ngIf="isChecked.reportedTime" [name]="'Reported Time'" prop="previousTimeStampMillis">
                     <ng-template ngx-datatable-cell-template let-value="value"><label style="padding-left: 27px">{{value
                         | date :'MM-dd-yyyy HH:mm:ss'}} </label> </ng-template>
                   </ngx-datatable-column>
@@ -631,3 +629,28 @@
     </div>
   </div>
 </div>
+
+<ng-template #customLoadingTemplate>
+  <div class="loader-overlay">
+    <div class="spinner">
+      <div class="spin-outer" id="preloader">
+        <div class="spin-container">
+          <div class="spin-inner">
+            <div class="spin-cube-grid">
+              <div class="spin-cube spin-cube1" style="background: url('assets/img/logo/cube-1.jpg');  background-size: cover;"></div>
+              <div class="spin-cube spin-cube2" style="background: url('assets/img/logo/cube-2.jpg');  background-size: cover;"></div>
+              <div class="spin-cube spin-cube3" style="background: url('assets/img/logo/cube-3.jpg');  background-size: cover;"></div>
+              <div class="spin-cube spin-cube4" style="background: url('assets/img/logo/cube-4.jpg');  background-size: cover;"></div>
+              <div class="spin-cube spin-cube5" style="background: url('assets/img/logo/cube-5.jpg'); background-size: cover;"></div>
+              <div class="spin-cube spin-cube6" style="background: url('assets/img/logo/cube-6.jpg'); background-size: cover;"></div>
+              <div class="spin-cube spin-cube7" style="background: url('assets/img/logo/cube-7.jpg'); background-size: cover;"></div>
+              <div class="spin-cube spin-cube8" style="background: url('assets/img/logo/cube-8.jpg'); background-size: cover;"></div>
+              <div class="spin-cube spin-cube9" style="background: url('assets/img/logo/cube-9.jpg'); background-size: cover;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '10px' }" [template]="customLoadingTemplate"></ngx-loading>

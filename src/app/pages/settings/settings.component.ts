@@ -30,6 +30,7 @@ export class SettingsComponent {
      private userObjectURI: string = '';
      private file: any;
      private session: Session;
+     private loading = true;
      userForm: FormGroup;
      securityForm: FormGroup;
      private userImage: string = '';
@@ -74,7 +75,9 @@ export class SettingsComponent {
                     filterType: 'eq'
                }]
           };
-          this._usersService.getUsers(input).subscribe((result: any) => {
+          this.loading = true;
+          this._settingsService.getUsers(input).subscribe((result: any) => {
+               this.loading = false;
                let userProfile = result.returnedValue.data.records[0]._customInfo;
                this.userObjectURI = result.returnedValue.data.records[0].objectURI;
                this.userImage = userProfile.c_image;
@@ -93,7 +96,7 @@ export class SettingsComponent {
                     password: ['', ''],
                     confirmPassword: ['', ''],
                }, { validator: matchingPasswords('password', 'confirmPassword') })
-          })
+          }, err => this.loading = false)
      }
      /**
 ** This function is used to call api for add,edit user
@@ -122,7 +125,9 @@ export class SettingsComponent {
                input['userData'].phoneNumber = "";
           }
           input["userEmailToUpdate"] = value.email;
-          this._usersService.updateUser(input).subscribe((result: any) => {
+          this.loading = true;
+          this._settingsService.updateUser(input).subscribe((result: any) => {
+               this.loading = false;
                this.translate.get('PROFILE.SUCCESS.UPDATION_SUCCESS').subscribe((res: string) => {
                     this.toastrService.success(res, '');
                });
@@ -156,7 +161,7 @@ export class SettingsComponent {
                     this._parent.ngOnInit();
                     this.getUserDetails();
                }
-          });
+          }, err => this.loading = false);
      }
 
      //upload image on change
@@ -198,7 +203,9 @@ export class SettingsComponent {
                oldPassword: value.currentPassword,
                newPassword: value.confirmPassword,
           };
+          this.loading = true;
           this._settingsService.resetPassword(input).subscribe((result: any) => {
+               this.loading = false;
                this.translate.get('PROFILE.SUCCESS.UPDATION_SUCCESS').subscribe((res: string) => {
                     this.toastrService.success(res, '');
                });

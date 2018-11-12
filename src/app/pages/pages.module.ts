@@ -1,3 +1,4 @@
+import { LoaderService } from './../services/loader/loader.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -19,15 +20,22 @@ import { BreadcrumbComponent } from '../theme/components/breadcrumb/breadcrumb.c
 import { BackTopComponent } from '../theme/components/back-top/back-top.component';
 import { SearchComponent } from './search/search.component';
 import { TranslateModule } from "@ngx-translate/core";
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 
 @NgModule({
   imports: [
     CommonModule,
+    NgxSpinnerModule,
     PerfectScrollbarModule,
     DirectivesModule,
     PipesModule,
     TranslateModule,
-    routing
+    routing,
+    FormsModule,
+    ReactiveFormsModule,
+    InternationalPhoneNumberModule
   ],
   declarations: [
     PagesComponent,
@@ -38,9 +46,9 @@ import { TranslateModule } from "@ngx-translate/core";
     MessagesComponent,
     BreadcrumbComponent,
     BackTopComponent,
-    SearchComponent
+    SearchComponent,
   ],
-  providers: [
+  providers: [LoaderService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

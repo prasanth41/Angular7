@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   private route: ActivatedRoute;
   public form: FormGroup;
   private returnUrl: string;
+  public loading = false;
 
   constructor(router: Router, route: ActivatedRoute, fb: FormBuilder, private logger: NGXLogger, private loginService: LoginService) {
     this.router = router;
@@ -34,7 +35,9 @@ export class LoginComponent implements OnInit {
 
   public onSubmit(loginForm: NgForm): void {
     this.logger.debug("Login Information: " + JSON.stringify(loginForm));
+    this.loading = true;
     this.loginService.login(loginForm).subscribe((result) => {
+      this.loading = false;
       const userInfo = result.returnedValue.data.userData;
       if (!(userInfo._customInfo.isPasswordReset)) {
         const session: Session = {
@@ -48,13 +51,13 @@ export class LoginComponent implements OnInit {
           tenantName: result.returnedValue.data.tenantName,
         }
         if (typeof (Storage) !== "undefined")
-          console.log(session)
-        sessionStorage.setItem('sessionInfo', JSON.stringify(session));
+          sessionStorage.setItem('sessionInfo', JSON.stringify(session));
         this.router.navigate([this.returnUrl]);
       } else {
         // jQuery("#resetPassword-modal").modal("show");
       }
     })
+
   }
 }
 

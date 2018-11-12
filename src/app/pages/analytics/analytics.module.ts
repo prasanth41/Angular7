@@ -28,7 +28,8 @@ export const routes = [
           BsDatepickerModule.forRoot(),
           TranslateModule,
           ChartModule,
-          SelectDropDownModule
+          SelectDropDownModule,
+          SharedModule
      ],
      declarations: [
           AnalyticsComponent

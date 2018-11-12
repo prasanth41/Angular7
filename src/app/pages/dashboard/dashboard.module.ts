@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { HttpModule } from '@angular/http';
 import { AuthGuard } from './../../app.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -52,6 +53,7 @@ Highcharts.setOptions({
     CommonModule,
     HttpClientModule,
     FormsModule,
+    // NgxLoadingModule,
     ReactiveFormsModule,
     DirectivesModule,
     DragulaModule,
@@ -71,7 +73,7 @@ Highcharts.setOptions({
       libraries: ["places"]
     }),
     AgmDirectionModule,
-    // SharedModule,
+    SharedModule,
     TranslateModule,
   ],
   declarations: [

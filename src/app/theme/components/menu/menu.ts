@@ -82,14 +82,14 @@ export const tenantItems = [
     expanded: false,
     order: 350
   },
-  // {
-  //   title: 'Business Rules',
-  //   routerLink: 'business-rules',
-  //   icon: 'fa fa-list',
-  //   selected: false,
-  //   expanded: false,
-  //   order: 350
-  // },
+  {
+    title: 'Business Rules',
+    routerLink: 'business-rules',
+    icon: 'fa fa-list',
+    selected: false,
+    expanded: false,
+    order: 350
+  },
   {
     title: 'Analytics',
     routerLink: 'analytics',
@@ -102,6 +102,25 @@ export const tenantItems = [
     title: 'Users',
     routerLink: 'tenant-users',
     icon: 'fa-users',
+    selected: false,
+    expanded: false,
+    order: 350
+  }
+];
+export const technicianItems = [
+  {
+    title: 'Dashboard',
+    routerLink: 'dashboard',
+    icon: 'fa-home',
+    selected: false,
+    expanded: false,
+    order: 0
+  },
+
+  {
+    title: 'Analytics',
+    routerLink: 'analytics',
+    icon: 'fa-bar-chart',
     selected: false,
     expanded: false,
     order: 350

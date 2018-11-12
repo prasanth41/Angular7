@@ -11,7 +11,7 @@ export const StaticApis = {
   updateTenantApiEndPoint: '/updateTenant',
   deleteTenantApiEndPoint: '/deleteTenant',
   forgotpassword: '/forgotPassword',
-  resetPassword: 'resetPassword',
+  resetPassword: '/resetPassword',
   getAlerts: '/getAlerts',
   getZonesApiEndPoint: '/getZones',
   getModelsApiEndPoint: '/getModels',
@@ -37,7 +37,8 @@ export const StaticApis = {
   getWeakBatteryCellsApiEndPoint: '/apps/' + environment.app.id + '/dashboard/assetsWithWeekCells/list?tenantID=',
   getTheftBatteryBanksApiEndPoint: '/apps/' + environment.app.id + '/dashboard/assetsWithMovementAlerts/list?tenantID=',
   getHealthStateDataApiEndPoint: '/apps/' + environment.app.id + '/dashboard/asset/healthState?tenantID=',
-
+  isValidTokenApiEndpoint: '/deployAndUpdateRules',
+  deployAndUpdateRulesApiEndpoint: '/authenticateUserWithToken',
 
 
 

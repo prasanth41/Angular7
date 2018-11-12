@@ -1,7 +1,7 @@
 import { Session } from './../../../models/Session';
 import { AppComponent } from './../../../app.component';
 import { NavbarService } from '../../../services/navbar/navbar.service';
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, Input, ViewEncapsulation, OnInit } from '@angular/core';
 import { AppState } from '../../../app.state';
 import { SidebarService } from '../sidebar/sidebar.service';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, NgForm, Validators } from '@angular/forms';
@@ -34,6 +34,7 @@ export class NavbarComponent {
     public session: Session;
     public enableMobileApps: boolean;
     private showTenant: boolean;
+    private datapassage: any
 
     constructor(router: Router, route: ActivatedRoute, public _state: AppState, public _sidebarService: SidebarService, public _navbarService: NavbarService, public toastrService: ToastrService, public formBuilder: FormBuilder, private logger: NGXLogger, private translate: TranslateService) {
         this.router = router;
@@ -86,6 +87,7 @@ export class NavbarComponent {
             this.logger.info('NAVEBAR', 'GetMobileAppUrls', "results:" + JSON.stringify(result));
             this.technicianApp = result.results[0].technicianApp;
             this.demoApp = result.results[0].demoApp;
+            this.datapassage = { "demoapp": this.demoApp, "technicianApp": this.technicianApp };
         });
 
     }

@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { ZoneInfoComponent } from './zones-info/zone-info.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -22,7 +23,8 @@ export const routes = [
           ReactiveFormsModule,
           TabsModule.forRoot(),
           RouterModule.forChild(routes),
-          TranslateModule
+          TranslateModule,
+          SharedModule
      ],
      declarations: [
           ZonesComponent,
