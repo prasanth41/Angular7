@@ -100,32 +100,32 @@
           <i class="fa fa-gear" style="font-size: 20px;color: #000e0efb"></i>
         </a>
 
-        <div class="dropdown-menu show" style="left: -102px;" (click)="onEvent($event)">
+        <div class="dropdown-menu " style="left: -102px;" (click)="onEvent($event)">
           <div class="container" style="width: 100%; position:relative !important">
             <div class="custom-controls-stacked">
               <label class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCardCheckbox()"
                   [(ngModel)]="statusCardIsChecked.healthState">
                 <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">{{'LABELS.HEALTH_STATE' | translate}}</span>
+                <span class="custom-control-label">{{'LABELS.HEALTH_STATE' | translate}}</span>
               </label>
               <label class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCardCheckbox()"
                   [(ngModel)]="statusCardIsChecked.chargingState">
                 <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">{{ 'LABELS.CHARGING_STATE' | translate }}</span>
+                <span class="custom-control-label">{{ 'LABELS.CHARGING_STATE' | translate }}</span>
               </label>
               <label class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCardCheckbox()"
                   [(ngModel)]="statusCardIsChecked.weakBatteries">
                 <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">{{'LABELS.BANKS_WITH_WEAK_CELLS' | translate }}</span>
+                <span class="custom-control-label">{{'LABELS.BANKS_WITH_WEAK_CELLS' | translate }}</span>
               </label>
               <label class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCardCheckbox()"
                   [(ngModel)]="statusCardIsChecked.theftBatteries">
                 <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">{{'LABELS.THEFT_BATTERIES' | translate }}</span>
+                <span class="custom-control-label">{{'LABELS.THEFT_BATTERIES' | translate }}</span>
               </label>
             </div>
           </div>
@@ -265,12 +265,12 @@
         <div class="form-group col-md-12" style="margin-top: -15px;"> <label class="custom-control custom-radio">
             <input type="radio" name="isEverywhereEnabled" [(ngModel)]="isEverywhereEnabled" (click)="onEverywhereSelected()"
               [value]="true" class="custom-control-input radio-primary">
-            <span class="custom-control-indicator"></span> <span class="custom-control-description" style="font-size: 13px;">Everywhere</span>
+            <span class="custom-control-indicator"></span> <span class="custom-control-label" style="font-size: 13px;">Everywhere</span>
           </label></div>
         <div class="form-group col-md-12" style="margin-top: -19px;"> <label class="custom-control custom-radio">
             <input type="radio" name="isEverywhereEnabled" [(ngModel)]="isEverywhereEnabled" (click)="onRadiusSelected()"
               [value]="false" class="custom-control-input radio-primary">
-            <span class="custom-control-indicator"></span> <span class="custom-control-description" style="font-size: 13px;">Radius</span>
+            <span class="custom-control-indicator"></span> <span class="custom-control-label" style="font-size: 13px;">Radius</span>
           </label></div>
       </div>
       <div class="row" [hidden]="isEverywhereEnabled" style="margin-top: -15px;">
@@ -306,7 +306,7 @@
                   <input type="checkbox" class="custom-control-input checkbox-success" value="{{data._customInfo.c_id}}"
                     [(ngModel)]="filter[data._customInfo.c_id]" (change)="zonesCheckbox(data._customInfo.c_id, $event.target.checked)">
                   <span class="custom-control-indicator"></span>
-                  <span class="custom-control-description">{{data._customInfo.c_name}}</span>
+                  <span class="custom-control-label">{{data._customInfo.c_name}}</span>
                 </label>
               </div>
             </div>
@@ -341,26 +341,26 @@
                         <i class="fa fa-gear" style="font-size: 17px;color: #000e0efb; background-color:#ffffff; padding:0px 5px"></i>
                       </a>
 
-                      <div class="dropdown-menu show" style="left: -102px;overflow-y: scroll; height: 110px;" (click)="onEvent($event)">
+                      <div class="dropdown-menu " style="left: -102px;overflow-y: scroll; height: 110px;" (click)="onEvent($event)">
                         <div class="container bootstrap" style="width: 100%;font-size: 13px">
                           <div class="custom-controls-stacked">
                             <!-- <label class="custom-control custom-checkbox">
 																					<input disabled type="checkbox" class="custom-control-input checkbox-secondary"  [(ngModel)]="isChecked.Name" >
 																					<span class="custom-control-indicator" disabled ></span>
-																					<span class="custom-control-description" style="font-weight:bold">{{'LABELS.NAME' | translate}}</span>
+																					<span class="custom-control-label" style="font-weight:bold">{{'LABELS.NAME' | translate}}</span>
 																				</label> -->
                             <label class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
                                 [(ngModel)]="isChecked.healthState">
                               <span class="custom-control-indicator"></span>
-                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.HEALTH_STATE'
+                              <span class="custom-control-label" style="font-weight:bold">{{'LABELS.HEALTH_STATE'
                                 | translate}}</span>
                             </label>
                             <label class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
                                 [(ngModel)]="isChecked.state">
                               <span class="custom-control-indicator"></span>
-                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.STATE' |
+                              <span class="custom-control-label" style="font-weight:bold">{{'LABELS.STATE' |
                                 translate}}</span>
                             </label>
 
@@ -368,42 +368,42 @@
                               <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
                                 [(ngModel)]="isChecked.SOC">
                               <span class="custom-control-indicator"></span>
-                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.SOC' |
+                              <span class="custom-control-label" style="font-weight:bold">{{'LABELS.SOC' |
                                 translate}}</span>
                             </label>
                             <label class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
                                 [(ngModel)]="isChecked.overAll_Voltage">
                               <span class="custom-control-indicator"></span>
-                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.TOTAL_VOLTAGE'
+                              <span class="custom-control-label" style="font-weight:bold">{{'LABELS.TOTAL_VOLTAGE'
                                 | translate}}</span>
                             </label>
                             <label class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
                                 [(ngModel)]="isChecked.temperature">
                               <span class="custom-control-indicator"></span>
-                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.TEMPERATURE'
+                              <span class="custom-control-label" style="font-weight:bold">{{'LABELS.TEMPERATURE'
                                 | translate}}</span>
                             </label>
                             <label class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
                                 (change)="onclickCheckbox()" [(ngModel)]="isChecked.weakCells">
                               <span class="custom-control-indicator"></span>
-                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.WEAK_CELLS' |
+                              <span class="custom-control-label" style="font-weight:bold">{{'LABELS.WEAK_CELLS' |
                                 translate}}</span>
                             </label>
                             <label class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
                                 [(ngModel)]="isChecked.dischargeCells">
                               <span class="custom-control-indicator"></span>
-                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.DISCHARGE_CYCLES'
+                              <span class="custom-control-label" style="font-weight:bold">{{'LABELS.DISCHARGE_CYCLES'
                                 | translate}}</span>
                             </label>
                             <label class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input checkbox-success" (change)="onclickCheckbox()"
                                 [(ngModel)]="isChecked.zone">
                               <span class="custom-control-indicator"></span>
-                              <span class="custom-control-description" style="font-weight:bold">{{'LABELS.ZONE' |
+                              <span class="custom-control-label" style="font-weight:bold">{{'LABELS.ZONE' |
                                 translate}}</span>
                             </label>
 

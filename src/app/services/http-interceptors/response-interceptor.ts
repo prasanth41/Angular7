@@ -12,6 +12,7 @@ export class ResponseInterceptor implements HttpInterceptor {
   constructor(private logger: NGXLogger, private translate: TranslateService, private toastr: ToastrService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log(request)
     // check to see if there's internet
     if (!window.navigator.onLine) {
       // if there is no internet, throw a HttpErrorResponse error
