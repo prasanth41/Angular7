@@ -1,4 +1,3 @@
-import { HttpService } from './../../shared/core/http.service';
 import { AlertFilter } from './../../models/filter';
 import { isValid } from './../../shared/utils/utils';
 import { Injectable } from '@angular/core';

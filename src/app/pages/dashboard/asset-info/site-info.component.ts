@@ -43,7 +43,6 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
   private weakRow2 = [];
   private weakRow3 = [];
   private weakRow4 = [];
-  private loading = false;
   sensorReadingsGraph: any = {};
   itemsPerPage = new FormControl('200');
   public page = {
@@ -230,9 +229,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     var assetId = JSON.parse(sessionStorage.getItem('assetInfoMarker')).asset_id;
     let cellArray = [];
     let splitdata;
-    this.loading = true;
     this._dashboardService.getHealthStateData(this.tenantIdSelected, assetId, input).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('DASHBOARD', 'getBatteryHealthInfo', "results:" + JSON.stringify(result));
       //let cellReadingsArray: any[] = result.data.cells;
       this.health_batteryReportedTime = result.data.statusUpdatedMillis;
@@ -293,7 +290,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       this.healthrow2 = deviceReadings.slice(6, 12);
       this.healthrow3 = deviceReadings.slice(12, 18);
       this.healthrow4 = deviceReadings.slice(18, 24);
-    }, err => this.loading = false)
+    }, err => {})
 
   }
   /**
@@ -327,9 +324,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       assetId: this.assetInfoMarkerID,
       chartType: "current"
     }
-    this.loading = true;
     this._siteInfoService.getTrendChart(this.tenantId, input).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'ahOutChart getTrendChart', "result:" + JSON.stringify(result));
       let recordsX: any[] = result.returnedValue.data.timeMills;
       let recordsY: any[] = result.returnedValue.data.readings;
@@ -443,7 +438,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
           }
         }
       });
-    }, err => this.loading = false)
+    }, err => {})
   }
 
 
@@ -501,9 +496,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       assetId: this.assetInfoMarkerID,
       chartType: "current"
     }
-    this.loading = true;
     this._siteInfoService.getTrendChart(this.tenantId, input).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'ahOutEnlargedView getTrendChart', "result:" + JSON.stringify(result));
 
       var chartState = "";
@@ -594,7 +587,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
           data: seriesData
         }]
       });
-    }, err => this.loading = false)
+    }, err => {})
   }
 
 
@@ -691,9 +684,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     var input = {
       userToken: this.token
     }
-    this.loading = true;
     this._siteInfoService.getTemperatureInfo(input, this.tenantIdSelected, this.assetInfoMarkerID).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'tempChart', "result:" + JSON.stringify(result));
       let records: any[] = result.data;
       let xaxisData: any[] = [];
@@ -797,7 +788,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
           }
         }
       });
-    }, err => this.loading = false)
+    }, err => {})
   }
 
   /**
@@ -810,9 +801,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       assetId: this.assetInfoMarkerID,
       chartType: "voltage"
     }
-    this.loading = true;
     this._siteInfoService.getTrendChart(this.tenantId, input).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'voltageChart', "result:" + JSON.stringify(result));
       let recordsX: any[] = result.returnedValue.data.timeMills;
       let recordsY: any[] = result.returnedValue.data.readings;
@@ -923,7 +912,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
           }
         }
       });
-    }, err => this.loading = false)
+    }, err => {})
   }
 
   /**
@@ -935,9 +924,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       assetId: this.assetInfoMarkerID,
       chartType: "voltage"
     }
-    this.loading = true;
     this._siteInfoService.getTrendChart(this.tenantId, input).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'voltageEnlargedView', "result:" + JSON.stringify(result));
       let recordsX: any[] = result.returnedValue.data.timeMills;
       let recordsY: any[] = result.returnedValue.data.readings;
@@ -1016,7 +1003,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
           data: seriesData
         }]
       });
-    }, err => this.loading = false)
+    }, err => {})
   }
 
   /**
@@ -1059,9 +1046,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       chartType: "cells",
       key: row.label
     }
-    this.loading = true;
     this._siteInfoService.getTrendChart(this.tenantId, input).subscribe((result: any) => {
-      this.loading = false;
       let recordsX: any[] = result.returnedValue.data.timeMills;
       let recordsY: any[] = result.returnedValue.data.readings;
       let xaxisData: any[] = [];
@@ -1139,7 +1124,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
           data: seriesData
         }]
       });
-    }, err => this.loading = false)
+    }, err => {})
   }
 
   ngOnDestroy() {
@@ -1171,9 +1156,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
 
     this.logger.info('ASSETINFO', 'GetAssetsService', "input:" + JSON.stringify(queryData));
     // api call for get assets data
-    this.loading = true;
     this._siteInfoService.getAssetInfo(queryData).subscribe((result: any) => {
-      this.loading = false;
       console.log(result);
       this.logger.info('ASSETINFO', 'Get Asset Details Service', "results:" + JSON.stringify(result));
       let response = result.returnedValue.status;
@@ -1312,7 +1295,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       } else {
         this.installationDate = 'NA';
       }
-    }, err => this.loading = false);
+    }, err => {});
 
     // api call for getSensorsByAsset data table
     let input = {
@@ -1329,9 +1312,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     }
 
     this.logger.info('ASSETINFO', 'GetDeviceAndReadings', "input:" + JSON.stringify(input));
-    this.loading = true;
     this._siteInfoService.getDeviceAndReadings(this.tenantId, input).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'GetDeviceAndReadings', "results:" + JSON.stringify(result));
       this.assetChartsData = result.returnedValue.data.records;
       let response: boolean = result.returnedValue.status;
@@ -1433,83 +1414,10 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       this.row2 = this.deviceReadingsArray.slice(6, 12);
       this.row3 = this.deviceReadingsArray.slice(12, 18);
       this.row4 = this.deviceReadingsArray.slice(18, 24);
-    }, err => this.loading = false);
+    }, err => {});
 
   }
 
-
-  // getweakCellsData() {
-  //   if (this.weakCellsCount == 0) {
-  //     this.weakRow1 = this.row1;
-  //     this.weakRow2 = this.row1;
-  //     this.weakRow3 = this.row1;
-  //     this.weakRow4 = this.row1;
-  //     this.weakCellReportingTime = this.reportingTime;
-  //   } else {
-  //     let input = {
-  //       "userToken": JSON.parse(sessionStorage.getItem('sessionInfo')).token,
-  //       "assetId": this.assetInfoMarkerID
-  //     }
-  //     this._siteInfoService.getWeakCellsData(input).subscribe((result: any) => {
-  //       this.logger.info('ASSETINFO', 'GetDeviceWeakCellReadings', "results:" + JSON.stringify(result));
-
-  //       let response: boolean = result.returnedValue.status;
-  //       let deviceReadings: any[] = result.returnedValue.data.cells;
-  //       let weakCellsReadingArray: any[] = result.returnedValue.data.weakCells;
-  //       this.deviceReadingsArray = [];
-  //       let updatedDate = this.datePipe.transform(new Date(result.returnedValue.data.timeStampMillis[0] - 19800000), 'MM/dd/yyyy HH:mm:ss');
-  //       // this.weakCellReportingTime = result.returnedValue.data.timeStampMillis[0];
-  //       if (this._commonUtils.isValid(result.returnedValue.data.timeStampMillis[0])) {
-  //         const reportingTime = this.datePipe.transform(new Date(result.returnedValue.data.timeStampMillis[0] - 19800000), 'd-MMMM-y, h:mm a');
-  //         this.weakCellReportingTime = reportingTime + " " + moment.tz.zone(moment.tz.guess()).abbr(new Date(result.returnedValue.data.timeStampMillis[0] - 19800000).getTime());
-  //       } else {
-  //         this.weakCellReportingTime = 'No data available';
-  //       }
-  //       deviceReadings.forEach(data => {
-  //         const sensorTableData: any = {};
-  //         let units = "";
-
-  //         if (this._commonUtils.isValid(data._customInfo.units)) {
-  //           if (data._customInfo.units.toUpperCase() === 'F' || data._customInfo.units.toUpperCase() === 'C') {
-  //             units = '°' + data.units.toUpperCase();
-  //           } else {
-  //             units = data._customInfo.units;
-  //           }
-  //         }
-  //         if (weakCellsReadingArray.indexOf(data._customInfo.label) != -1) {
-  //           sensorTableData['statusClass'] = "sensor-critical";
-  //           sensorTableData['cellColor'] = " #ebd2d2";
-  //           sensorTableData['customColor'] = "text-danger";
-  //         } else {
-  //           sensorTableData['statusClass'] = "sensor-ok";
-  //           sensorTableData['cellColor'] = "#0F8942";
-  //           sensorTableData['customColor'] = "text-success";
-  //         }
-
-  //         if (this._commonUtils.isValid(data._customInfo.value)) {
-  //           sensorTableData['value'] = this.decimalPipe.transform(data._customInfo.value, '1.0-2') + ' ' + units;
-
-  //         } else {
-  //           sensorTableData['value'] = "NA";
-  //           sensorTableData['statusClass'] = "sensor-ok";
-  //           sensorTableData['cellColor'] = "#0F8942";
-
-  //           sensorTableData['customColor'] = "text-success";
-  //         }
-  //         sensorTableData['label'] = data._customInfo.label;
-  //         this.deviceReadingsArray.push(sensorTableData);
-
-  //       });
-  //       this.deviceReadingsArray.sort(this.dynamicSort("label"));
-  //       this.rows = this.deviceReadingsArray;
-  //       this.weakRow1 = this.deviceReadingsArray.slice(0, 6);
-  //       this.weakRow2 = this.deviceReadingsArray.slice(6, 12);
-  //       this.weakRow3 = this.deviceReadingsArray.slice(12, 18);
-  //       this.weakRow4 = this.deviceReadingsArray.slice(18, 24);
-
-  //     });
-  //   }
-  // }
 
   /**
   ** This function is used to sort the data
@@ -1598,9 +1506,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       };
     }
     this.logger.info('ASSETINFO', 'getDeviceReadingsInTrendGraph', "input:" + JSON.stringify(postData));
-    this.loading = true;
     this._siteInfoService.getDeviceReadingsInTrendGraph(postData).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'getDeviceReadingsInTrendGraph', "results:" + JSON.stringify(result));
       this.translate.get('INFO.NO_DATA_AVAILABLE').subscribe((res: string) => {
         this.noData = res;
@@ -1677,7 +1583,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
           data: seriesData
         }]
       });
-    }, err => this.loading = false);
+    }, err => {});
   };
 
   //Search based on sensor name
@@ -1717,9 +1623,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
   */
   private loadReadings(postData) {
     return new Promise((resolve, reject) => {
-      this.loading = true;
       this._siteInfoService.getDeviceReadings(postData).subscribe((data: any) => {
-        this.loading = false;
         if (data.returnedValue.status) {
           let records: any[] = data.returnedValue.data.records;
           records.reverse();
@@ -1766,7 +1670,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
             this.toastrService.error(res, '');
           });
         }
-      }, err => this.loading = false);
+      }, err => {});
     });
   }
 
@@ -1796,9 +1700,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     };
     this.logger.info('ASSETINFO', 'getDischargeCycles', "input:" + JSON.stringify(queryData));
     // api call for get assets data
-    this.loading = true;
     this._siteInfoService.getDischargeCycles(queryData).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'getDischargeCycles Service', "results:" + JSON.stringify(result));
       let response: boolean = result.returnedValue.status;
       let itemsTotal = result.returnedValue.data.records.length;
@@ -1842,7 +1744,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       this.page['size'] = this.page['size'];
       this.page['totalElements'] = itemsTotal;
       this.rowsFordisChargeCycles.length = itemsTotal;
-    }, err => this.loading = false);
+    }, err => {});
 
   }
 
@@ -1861,9 +1763,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     };
     this.logger.info('ASSETINFO', 'getChargeCycles', "input:" + JSON.stringify(queryData));
     // api call for get assets data
-    this.loading = true;
     this._siteInfoService.getChargeCycles(queryData).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info('ASSETINFO', 'getChargeCycles Service', "results:" + JSON.stringify(result));
       let response: boolean = result.returnedValue.status;
       let itemsTotal = result.returnedValue.data.records.length;
@@ -1906,7 +1806,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       this.page['size'] = this.page['size'];
       this.page['totalElements'] = itemsTotal;
       this.rowsForChargeCycles.length = itemsTotal;
-    }, err => this.loading = false);
+    }, err => {});
   }
 
   // Sorting
@@ -1952,9 +1852,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     }
 
     this.logger.info("Discharge Cycles Input Info" + JSON.stringify(input));
-    this.loading = true;
     this._siteInfoService.charge_dischargeVoltageChartInfo(input, this.tenantIdSelected, this.assetInfoMarkerID, chargeType).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info("Voltage Chart Info" + JSON.stringify(result));
       let data: any[] = result.data;
       let xaxisData: any[] = [];
@@ -2029,11 +1927,9 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
         }
         ]
       });
-    }, err => this.loading = false)
+    }, err => {})
 
-    this.loading = true;
     this._siteInfoService.charge_dischargeAHChartInfo(input, this.tenantIdSelected, this.assetInfoMarkerID, chargeType).subscribe((result: any) => {
-      this.loading = false;
       this.logger.info("AHOUT Chart Info" + JSON.stringify(result));
       let data: any[] = result.data;
       let xaxisData: any[] = [];
@@ -2110,7 +2006,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
         }]
       });
 
-    }, err => this.loading = false)
+    }, err => {})
   }
 
 }

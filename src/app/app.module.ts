@@ -1,8 +1,8 @@
-import { CoreModule } from './shared/core/core.module';
+
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpModule } from '@angular/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-// import { LoaderComponent } from './shared/core/loader/loader.component';
 import 'pace';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -22,7 +22,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import * as exporting from 'highcharts/modules/exporting.src';
 import * as exportData from 'highcharts/modules/export-data.js';
 import { Injectable } from '@angular/core';
-
+import { LoaderComponent } from './loader/loader.component';
+import { LoaderInterceptorService } from './services/http-interceptors/loader-interceptor.service';
 @Injectable()
 export class AuthGuard {
   constructor(private router: Router) {
@@ -45,18 +46,18 @@ export class AuthGuard {
   }
 }
 @NgModule({
-  declarations: [
-    AppComponent,
-    ErrorComponent,
-    // LoaderComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCx_ZaqWDu6leZ7ffeIz5sG9qrN5s4KFF0',
-      libraries: ["places"]
-    }),
+   declarations: [
+      AppComponent,
+      ErrorComponent,
+      LoaderComponent
+   ],
+   imports: [
+      BrowserModule,
+      BrowserAnimationsModule,
+      AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyCx_ZaqWDu6leZ7ffeIz5sG9qrN5s4KFF0',
+        libraries: ["places"]
+      }),
     ToastrModule.forRoot(),
     routing,
     SharedModule,
@@ -64,7 +65,6 @@ export class AuthGuard {
     OrderModule,
     HttpClientModule,
     HttpModule,
-    CoreModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {
@@ -79,7 +79,12 @@ export class AuthGuard {
       serverLogLevel: NgxLoggerLevel.OFF
     }),
   ],
-  providers: [GoogleMapsAPIWrapper, AppConfig, AuthGuard, { provide: HIGHCHARTS_MODULES, useFactory: () => [exporting, exportData] }],
+  providers: [GoogleMapsAPIWrapper, AppConfig, AuthGuard, { provide: HIGHCHARTS_MODULES, useFactory: () => [exporting, exportData] },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: LoaderInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

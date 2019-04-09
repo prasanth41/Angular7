@@ -1,4 +1,3 @@
-import { LoaderService } from './../../services/loader/loader.service';
 import { HttpClient } from '@angular/common/http';
 import { isValid, replaceSpaceWithUnderScope } from './../../shared/utils/utils';
 import { DashboardService } from './../../services/dashboard/dashboard.service';
@@ -176,8 +175,7 @@ export class DashboardComponent {
     private badcellPostfixNo2 = [];
     private showbadcells: boolean = false;
     private session: Session;
-    public loading = false;
-    constructor(private decimalPipe: DecimalPipe, private loaderService: LoaderService, private spinner: NgxSpinnerService, private _appConfig: AppConfig, private _dashboardService: DashboardService, private formBuilder: FormBuilder, private mapsAPILoader: MapsAPILoader,
+    constructor(private decimalPipe: DecimalPipe,private spinner: NgxSpinnerService, private _appConfig: AppConfig, private _dashboardService: DashboardService, private formBuilder: FormBuilder, private mapsAPILoader: MapsAPILoader,
         private ngZone: NgZone, public toastrService: ToastrService, private http: HttpClient, private logger: NGXLogger, private translate: TranslateService, ) {
 
         this.statusArray = this._appConfig.statusArray;
@@ -238,12 +236,9 @@ export class DashboardComponent {
         this.isChecked = this.checkedView;
         this.statusCardIsChecked = this.cardCheckedView;
         // this.statusCardIsChecked = { healthState: true, chargingState: true, weakBatteries: true, theftBatteries: true }
-        this.loading = true;
         this._dashboardService.currentFilterData.subscribe(data => {
             this.data = data;
-            this.loading = false;
         }, err => {
-            this.loading = false;
         });
         if (this.session.tenantType === "Master") {
             this.enableTenant = true;
@@ -317,7 +312,6 @@ export class DashboardComponent {
             ],
             "userToken": JSON.parse(sessionStorage.getItem('sessionInfo')).token
         }
-        this.loading = true;
         this._dashboardService.getHealthStateService(this.tenantIdSelected, input).subscribe((result: any) => {
             this.logger.info('DASHBOARD', 'Get Health State', 'results:' + JSON.stringify(result));
             var healthStateData = result.data.status;
@@ -413,9 +407,7 @@ export class DashboardComponent {
 
                 }]
             });
-            this.loading = false;
         }, err => {
-            this.loading = false;
         })
     }
     /**
@@ -428,7 +420,6 @@ export class DashboardComponent {
             ],
             "userToken": JSON.parse(sessionStorage.getItem('sessionInfo')).token
         }
-        this.loading = true;
         this._dashboardService.getChargeStateService(this.tenantIdSelected, input).subscribe((result: any) => {
             this.logger.info('DASHBOARD', 'Get Charge State', 'results:' + JSON.stringify(result));
             var chargeStateData = result.data.status;
@@ -525,9 +516,8 @@ export class DashboardComponent {
                     // type: 'column',
                 }]
             });
-            this.loading = false;
         },
-            err => { this.loading = false; })
+            err => {  })
     }
 
     /**
@@ -537,7 +527,6 @@ export class DashboardComponent {
         var input = {
             "userToken": JSON.parse(sessionStorage.getItem('sessionInfo')).token
         }
-        this.loading = true;
         this._dashboardService.getWeakBatteryCellCount(this.tenantIdSelected, input).subscribe((result: any) => {
             this.logger.info('DASHBOARD', 'Get Weak Battery State', 'results:' + JSON.stringify(result));
             var xaxisData: any = [];
@@ -608,8 +597,7 @@ export class DashboardComponent {
                     data: seriesData
                 }],
             });
-            this.loading = false;
-        }, err => this.loading = false)
+        }, err => {})
     }
 
     /**
@@ -632,21 +620,18 @@ export class DashboardComponent {
             ],
             "userToken": JSON.parse(sessionStorage.getItem('sessionInfo')).token
         }
-        this.loading = true;
         this._dashboardService.getWeakBatteryCells(this.tenantIdSelected, input).subscribe((result: any) => {
             this.logger.info('DASHBOARD', 'Get Weak Battery cells List', 'results:' + JSON.stringify(result));
             this.weakBatteriesCount = value;
             var data: any[] = result.data.assets;
             this.tableRows = data;
-            this.loading = false;
-        }, err => this.loading = false)
+        }, err => {})
     }
 
     theftBatteriesChart() {
         var input = {
             "userToken": JSON.parse(sessionStorage.getItem('sessionInfo')).token
         }
-        this.loading = true;
         this._dashboardService.getTheftBatteryCellCount(this.tenantIdSelected, input).subscribe((result: any) => {
             console.log(result);
             this.logger.info('DASHBOARD', 'Get Weak Battery State', 'results:' + JSON.stringify(result));
@@ -706,8 +691,7 @@ export class DashboardComponent {
                     // [0, 1, 0, 0, 1, 1, 0, 0, 2, 0]
                 }],
             });
-            this.loading = false;
-        }, err => this.loading = false)
+        }, err => {})
     }
 
     getTheftBatteriesWithCells(date, value) {
@@ -726,7 +710,6 @@ export class DashboardComponent {
             ],
             "userToken": JSON.parse(sessionStorage.getItem('sessionInfo')).token
         }
-        this.loading = true;
         this._dashboardService.getTheftBatteryBanks(this.tenantIdSelected, input).subscribe((result: any) => {
             this.logger.info('DASHBOARD', 'Get Theft Battery Banks List', 'results:' + JSON.stringify(result));
             console.log(result);
@@ -743,8 +726,7 @@ export class DashboardComponent {
                 this.destinationLatLngArray.push({ lat: data.lat, lng: data.lon })
             });
             console.log(this.theftBatterytableRows);
-            this.loading = false;
-        }, err => this.loading = false)
+        }, err => {})
     }
     /**
     ** This function is used to set current position
@@ -925,11 +907,9 @@ export class DashboardComponent {
         let input = {
             'userToken': JSON.parse(sessionStorage.getItem('sessionInfo')).token
         }
-        this.loading = true;
         this._dashboardService.getZones(input).subscribe(result => {
             this.zonesArray = result['returnedValue'].data.records;
-            this.loading = false;
-        }, err => this.loading = false)
+        }, err => {})
     }
 
     /**
@@ -1032,7 +1012,6 @@ export class DashboardComponent {
             });
         }
         this.logger.info('DASHBOARD', 'Get Assets Input' + JSON.stringify(data));
-        this.loading = true;
         this._dashboardService.getAssetsService(this.tenantIdSelected, data).subscribe((result: any) => {
             this.logger.info('DASHBOARD', 'Get Assets', 'results:' + JSON.stringify(result));
             let itemsTotal = result.data.recordsTotal;
@@ -1186,8 +1165,7 @@ export class DashboardComponent {
             this.page.totalElements = itemsTotal;
             this.rows.length = itemsTotal;
             setTimeout(() => window.dispatchEvent(new Event('resize')));
-            this.loading = false;
-        }, err => this.loading = false);
+        }, err => {});
     }
     markerClicked(infowindow) {
         if (this.previous) {
@@ -1213,7 +1191,6 @@ export class DashboardComponent {
         let cellArray = [];
 
         let splitdata: any;
-        this.loading = true;
         this._dashboardService.getHealthStateData(this.tenantIdSelected, assetId, input).subscribe((result: any) => {
             this.logger.info('DASHBOARD', 'getBatteryHealthInfo', "results:" + JSON.stringify(result));
             //let cellReadingsArray: any[] = result.data.cells;
@@ -1278,8 +1255,7 @@ export class DashboardComponent {
             this.healthrow2 = deviceReadings.slice(6, 12);
             this.healthrow3 = deviceReadings.slice(12, 18);
             this.healthrow4 = deviceReadings.slice(18, 24);
-            this.loading = false;
-        }, err => this.loading = false)
+        }, err => {})
 
     }
 
@@ -1380,7 +1356,6 @@ export class DashboardComponent {
     ** This function is used to delete asset
     */
     deleteAsset() {
-        this.loading = true;
         this._dashboardService.deleteAsset({
             userToken: this.token,
             assetId: this.assetIdToDelete
@@ -1395,8 +1370,7 @@ export class DashboardComponent {
             } else {
                 this.deleteAsset();
             }
-            this.loading = false;
-        }, err => this.loading = false);
+        }, err => {});
     }
 
     //Search based on asset name

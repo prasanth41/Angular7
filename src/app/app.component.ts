@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'az-root',
   encapsulation: ViewEncapsulation.None,
   template: `<router-outlet></router-outlet>
+  <az-loader></az-loader>
   <div class="modal fade" id="sessionExpired-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
   data-backdrop="static" data-keyboard="false" style="display: none;">
   <div class="modal-dialog modal-md" role="document"> <div class="modal-content">

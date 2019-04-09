@@ -1,9 +1,0 @@
-{
-  "threadSleepTime": 3000,
-  "login": {
-    "userName": "input[formControlName=userMail]",
-    "password": "input[formControlName=userPassword]",
-    "signIn": ".//*[@class='btn btn-primary btn-sm btn-block']",
-    "loginVerification": ".//a[@href='#/pages/dashboard' and contains(span,'Dashboard')]"
-  }
-}

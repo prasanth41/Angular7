@@ -1,4 +1,3 @@
-import { LoaderService } from './../services/loader/loader.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -48,7 +47,7 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     BackTopComponent,
     SearchComponent,
   ],
-  providers: [LoaderService,
+  providers: [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

@@ -31,7 +31,6 @@ export class BusinessRulesComponent implements OnInit {
      private RULES: any;
      private iframe;
      private session: Session
-     public loading = false
      constructor(private http: HttpClient, private translate: TranslateService, private _appConfig: AppConfig, private toastrService: ToastrService, private _businessRulesService: BusinessRulesService, private sanitizer: DomSanitizer, private logger: NGXLogger) {
           this.session = JSON.parse(sessionStorage.getItem('sessionInfo'))
           this.token = this.session.token;
@@ -49,9 +48,7 @@ export class BusinessRulesComponent implements OnInit {
           let input = {
                'userToken': this.token,
           };
-          this.loading = true
           this._businessRulesService.isValidToken(input).subscribe((result: any) => {
-               this.loading = false
                this.rulesKeys.forEach(data => {
                     var id = this.rulesKeys[data];
                     var rule = this.options[id];
@@ -60,14 +57,11 @@ export class BusinessRulesComponent implements OnInit {
                          this.logger.info('BUSINESS_RULES_COMPLETE', 'URL', "results:" + this.businessRulesUrl);
                     }
                });
-          }, err => this.loading = false);
+          }, err => {});
      }
 
-
      public deployRules = function () {
-          this.loading = true;
           this._businessRulesService.deployAndUpdateRules().subscribe((result: any) => {
-               this.loading = false;
                this.logger.info('Deploy and Update', 'DeployAndUpdateRules', "results:" + JSON.stringify(result));
 
                if (result.returnedValue.status == true) {
@@ -77,6 +71,6 @@ export class BusinessRulesComponent implements OnInit {
                     this.toastrService.error('Failed to Deploy Rules', '');
                }
 
-          }, err => this.loading = false);
+          }, err =>{});
      }
 }

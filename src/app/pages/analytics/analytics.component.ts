@@ -66,7 +66,6 @@ export class AnalyticsComponent implements AfterViewInit, PipeTransform {
           search: true,
      };
      public bsConfig: Partial<BsDatepickerConfig>;
-     public loading = false;
 
      constructor(private datePipe: DatePipe, private toastrService: ToastrService, private http: HttpClient, private translate: TranslateService, private _analyticService: AnalyticsService, private _dashboardService: DashboardService, private logger: NGXLogger) {
           this.session = JSON.parse(sessionStorage.getItem('sessionInfo'));
@@ -132,11 +131,9 @@ export class AnalyticsComponent implements AfterViewInit, PipeTransform {
                "userToken": this.session.token,
           }
           if (this.tenantType !== 'Tenant') {
-               this.loading = true;
                this._dashboardService.getTenants(data).subscribe((result: any) => {
-                    this.loading = false;
                     this.tenants = result.returnedValue.data.records;
-               }, err => this.loading = false);
+               }, err => {});
           }
      }
      ngAfterViewInit() {
@@ -173,9 +170,7 @@ export class AnalyticsComponent implements AfterViewInit, PipeTransform {
                "userToken": this.token,
                "length": 199
           }
-          this.loading = true;
           this._dashboardService.getAssetsService(this.tenantIdSelected, data).subscribe((result: any) => {
-               this.loading = false;
                this.logger.info('DASHBOARD', 'Get Assets' + JSON.stringify(result));
                var assetsData = result.data.assets;
                // for (var i = 0; i < assetsData.length; i++) {
@@ -234,7 +229,6 @@ export class AnalyticsComponent implements AfterViewInit, PipeTransform {
                this.getTemperatureInfoChart(input, this.tenantIdSelected, this.assetInfoMarkerID)
           },
                function (error) {
-                    this.loading = false;
                     //     if (error.status === CONFIG_DATA.SERVER_RESPONSE.FAIL_CODE && error.data.errorCode.toUpperCase() === CONFIG_DATA.WRONG_TOKEN) {
                     //       utilityFunctions.sessionExpired($translate.instant('Menu.SESSION_EXPIRED'));
                     //     } else {
@@ -403,9 +397,7 @@ export class AnalyticsComponent implements AfterViewInit, PipeTransform {
      **This function is used to get temperature information and display data in chart
      */
      public getTemperatureInfoChart(data, tenantId, assetInfoMarkerID) {
-          this.loading = true
           this._analyticService.getTemperatureInfo(data, tenantId, assetInfoMarkerID).subscribe((result: any) => {
-               this.loading = false
                this.logger.info('ANALYTICS', 'GetSensorIssuesChart', "results:" + JSON.stringify(result));
                this.translate.get('ANALYTICS.TITLE.SENSORS_BY_ISSUES').subscribe((res: string) => {
                     this.sensorsByIssues = res;
@@ -486,8 +478,7 @@ export class AnalyticsComponent implements AfterViewInit, PipeTransform {
                          type: 'spline',
                     }]
                });
-          }, err => this.loading = false
-          );
+          }, err =>{});
      }
 
 }

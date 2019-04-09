@@ -37,7 +37,6 @@ export class AlertsComponent implements OnInit {
   private filter: AlertFilter;
   itemsPerPage = new FormControl('10');
   private rows: Array<Alert> = [];
-  public loading = false;
   private search: string = '';
   private sortOrder: string = 'desc';
   private sortColumn: string = '_created';
@@ -49,7 +48,6 @@ export class AlertsComponent implements OnInit {
   private assetLocationName: string = '';
   private image: string = '';
   private render: boolean;
-  private isLoading: boolean;
   private noRecords: boolean = false;
 
   readonly headerHeight = 50;
@@ -76,7 +74,6 @@ export class AlertsComponent implements OnInit {
   }
   public loadAlertsData() {
     if (!this.noRecords) {
-      this.isLoading = true;
       let nextPaginationKey = this.nextPageKey + this.activePage * this.page['size'];
       let data = {
         'order': { "dir": this.sortOrder, "column": this.sortColumn },
@@ -125,9 +122,7 @@ export class AlertsComponent implements OnInit {
       }
       this.logger.info("Alert Input Data " + JSON.stringify(data));
       // api call for get alerts data
-      this.loading = true;
       this._alertsService.getAlerts(data).subscribe((result: any) => {
-        this.loading = false;
         // this.logger.info('ALERTS', 'getAlerts', "results:" + JSON.stringify(result));
         // this.nextPageKey = result.returnedValue.data.nextPaginationKey;
         let alerts: any[] = result.returnedValue.data.records;
@@ -180,8 +175,7 @@ export class AlertsComponent implements OnInit {
         this.page['totalElements'] = itemsTotal;
         this.rows.length = itemsTotal;
         // setTimeout(() => window.dispatchEvent(new Event('resize')));
-        this.isLoading = false;
-      }, err => this.loading = false);
+      }, err => {});
     }
   }
 

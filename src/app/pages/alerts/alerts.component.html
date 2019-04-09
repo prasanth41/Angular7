@@ -33,22 +33,11 @@
                                         (keyup)="updateFilter($event)" />
                               </div>
                               <br />
-                              <!-- <ngx-datatable #table class="bootstrap" [rows]="rows" [columnMode]="'standard'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [externalSorting]="true" [loadingIndicator]="loading" (sort)="onSort($event)" [externalPaging]="true" [count]="page.totalElements"
-						  [offset]="page.pageNumber" [limit]="page.size" (page)='setPage($event)' [sorts]="[{prop: '_created', dir: 'desc'}]"> -->
 
                               <ngx-datatable #table class="bootstrap" [rows]="rows" [columnMode]="'force'"
                                    [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [externalSorting]="true"
                                    [loadingIndicator]="loading" (sort)="onSort($event)" [externalPaging]="true" [count]="page.totalElements"
                                    [offset]="page.pageNumber" [limit]="page.size" (page)='setPage($event)' [sorts]="[{prop: '_created', dir: 'desc'}]">
-
-                                   <!-- <ngx-datatable class="bootstrap server-scrolling-demo" [rows]="rows" [columnMode]="'standard'" [headerHeight]="headerHeight" [rowHeight]="'auto'" [loadingIndicator]="isLoading" [externalSorting]="true" (sort)="onSort($event)" [sorts]="[{prop: '_created', dir: 'desc'}]"
-						  [scrollbarH]="false" [scrollbarV]="false" (scroll)="onScroll($event.offsetY)"> -->
-
-                                   <!-- <ngx-datatable-column cellClass="text-center" [sortable]="false" [width]="10">
-								<ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-									<span class="text-center"><a style="cursor:pointer"  data-toggle="modal" data-target="#alertGeo-location" (click) = "getAlertGeoLocation(row)" href><i class="fa fa-map-marker fa-2x" aria-hidden="true"></i></a></span>
-								</ng-template>
-							</ngx-datatable-column> -->
 
                                    <ngx-datatable-column name="{{ 'Menu.BRANDNAME' | translate }} {{ 'LABELS.NAME' | translate }}"
                                         [width]="100" prop="assetName">
@@ -146,28 +135,3 @@
 </div>
 
 <!-- Filter Modal Popup End-->
-
-<ng-template #customLoadingTemplate>
-     <div class="loader-overlay">
-          <div class="spinner">
-               <div class="spin-outer" id="preloader">
-                    <div class="spin-container">
-                         <div class="spin-inner">
-                              <div class="spin-cube-grid">
-                                   <div class="spin-cube spin-cube1" style="background: url('assets/img/logo/cube-1.jpg');  background-size: cover;"></div>
-                                   <div class="spin-cube spin-cube2" style="background: url('assets/img/logo/cube-2.jpg');  background-size: cover;"></div>
-                                   <div class="spin-cube spin-cube3" style="background: url('assets/img/logo/cube-3.jpg');  background-size: cover;"></div>
-                                   <div class="spin-cube spin-cube4" style="background: url('assets/img/logo/cube-4.jpg');  background-size: cover;"></div>
-                                   <div class="spin-cube spin-cube5" style="background: url('assets/img/logo/cube-5.jpg'); background-size: cover;"></div>
-                                   <div class="spin-cube spin-cube6" style="background: url('assets/img/logo/cube-6.jpg'); background-size: cover;"></div>
-                                   <div class="spin-cube spin-cube7" style="background: url('assets/img/logo/cube-7.jpg'); background-size: cover;"></div>
-                                   <div class="spin-cube spin-cube8" style="background: url('assets/img/logo/cube-8.jpg'); background-size: cover;"></div>
-                                   <div class="spin-cube spin-cube9" style="background: url('assets/img/logo/cube-9.jpg'); background-size: cover;"></div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</ng-template>
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '10px' }" [template]="customLoadingTemplate"></ngx-loading>

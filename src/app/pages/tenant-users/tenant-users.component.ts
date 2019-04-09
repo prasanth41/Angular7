@@ -26,7 +26,6 @@ export class TenantUsersComponent implements OnInit {
           totalElements: 0,
           pageNumber: 0,
      };
-     private loading = false
      private nextPageKey: string = '200/';
      private activePage: number = 0;
      private start: number = 0;
@@ -128,9 +127,7 @@ export class TenantUsersComponent implements OnInit {
                     "filterType": "sw"
                });
           }
-          this.loading = true;
           this._usersService.getUsers(input).subscribe((result: any) => {
-               this.loading = false;
                this.logger.info('TENANTUSERS', 'GetTenantUsers', "results:" + JSON.stringify(result));
                this.logger.info('TENANTUSERS', 'GetTenantUsers', "results:" + JSON.stringify(result));
                let response: boolean = result.returnedValue.status;
@@ -155,7 +152,7 @@ export class TenantUsersComponent implements OnInit {
                this.page['size'] = this.page['size'];
                this.page['totalElements'] = itemsTotal;
                this.rows.length = itemsTotal;
-          }, err => this.loading = false)
+          }, err => {})
      }
 
      //For username and emailPasswordTo
@@ -299,9 +296,7 @@ export class TenantUsersComponent implements OnInit {
 
           if (this.Add_or_Edit_User === 'Add') {
                this.logger.info('TENANTUSERS', 'AddUser', "input:" + JSON.stringify(input));
-               this.loading = true;
                this._usersService.addUser(input).subscribe((result: any) => {
-                    this.loading = false;
                     this.logger.info('TENANTUSERS', 'AddUser', "results:" + JSON.stringify(result));
                     jQuery("#add_edit-modal").modal("hide");
                     this.translate.get('USERS.SUCCESS.CREATION_SUCCESS').subscribe((res: string) => {
@@ -317,13 +312,11 @@ export class TenantUsersComponent implements OnInit {
                               this.loadData();
                          });
                     } else { this.loadData(); }
-               }, err => this.loading = false);
+               }, err => {});
           } else if (this.Add_or_Edit_User === 'Edit') {
                input["userEmailToUpdate"] = value.email;
                this.logger.info('TENANTUSERS', 'EditUser', "input:" + JSON.stringify(input));
-               this.loading = true;
                this._usersService.updateUser(input).subscribe((result: any) => {
-                    this.loading = false;
                     this.logger.info('TENANTUSERS', 'EditUser', "results:" + JSON.stringify(result));
                     jQuery("#add_edit-modal").modal("hide");
                     this.translate.get('USERS.SUCCESS.UPDATION_SUCCESS').subscribe((res: string) => {
@@ -339,7 +332,7 @@ export class TenantUsersComponent implements OnInit {
                               this.loadData();
                          });
                     } else { this.loadData(); }
-               }, err => this.loading = false);
+               }, err => {});
           }
      }
 
@@ -356,16 +349,14 @@ export class TenantUsersComponent implements OnInit {
      */
      public deleteUser() {
           let input: any = { userToken: this.token, userEmailToDelete: this.userEmailToDelete };
-          this.loading = true;
           this._usersService.deleteUser(input).subscribe((result: any) => {
-               this.loading = false;
                this.logger.info('TENANTUSERS', 'DeleteUser', "results:" + JSON.stringify(input));
                this.translate.get('USERS.SUCCESS.DELETION_SUCCESS').subscribe((res: string) => {
                     this.toastrService.success(res, '');
                });
                jQuery("#delete-modal").modal("hide");
                this.loadData();
-          }, err => this.loading = false);
+          }, err => {});
      }
 
      /**
