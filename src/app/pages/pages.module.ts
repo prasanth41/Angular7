@@ -10,14 +10,12 @@ import { DirectivesModule } from '../theme/directives/directives.module';
 import { PipesModule } from '../theme/pipes/pipes.module';
 import { routing } from './pages.routing';
 import { PagesComponent } from './pages.component';
-import { BlankComponent } from './blank/blank.component';
 import { MenuComponent } from '../theme/components/menu/menu.component';
 import { SidebarComponent } from '../theme/components/sidebar/sidebar.component';
 import { NavbarComponent } from '../theme/components/navbar/navbar.component';
 import { MessagesComponent } from '../theme/components/messages/messages.component';
 import { BreadcrumbComponent } from '../theme/components/breadcrumb/breadcrumb.component';
 import { BackTopComponent } from '../theme/components/back-top/back-top.component';
-import { SearchComponent } from './search/search.component';
 import { TranslateModule } from "@ngx-translate/core";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -38,14 +36,12 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
   ],
   declarations: [
     PagesComponent,
-    BlankComponent,
     MenuComponent,
     SidebarComponent,
     NavbarComponent,
     MessagesComponent,
     BreadcrumbComponent,
     BackTopComponent,
-    SearchComponent,
   ],
   providers: [
     {

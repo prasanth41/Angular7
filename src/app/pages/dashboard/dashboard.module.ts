@@ -9,12 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { DirectivesModule } from '../../theme/directives/directives.module';
 import { PipesModule } from '../../theme/pipes/pipes.module';
 import { DashboardComponent } from './dashboard.component';
-import { DatamapComponent } from './datamap/datamap.component';
-import { DynamicChartComponent } from './dynamic-chart/dynamic-chart.component';
-import { ChartsModule } from 'ng2-charts';
 import 'chart.js/dist/Chart.js';
 import { AgmCoreModule } from '@agm/core';
-import { LocationComponent } from './location/location.component';
 import { SiteInfoComponent } from './asset-info/site-info.component';
 import { TheftInfoComponent } from './theft-batteryinfo/theft-batteryInfo.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -78,7 +74,6 @@ Highcharts.setOptions({
   ],
   declarations: [
     DashboardComponent,
-    LocationComponent,
     SiteInfoComponent,
     TheftInfoComponent
   ]

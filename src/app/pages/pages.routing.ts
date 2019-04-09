@@ -6,8 +6,6 @@ import { ModuleWithProviders } from '@angular/core';
 
 import { AuthGuard } from '../services/auth-guard/auth-guard';
 import { PagesComponent } from './pages.component';
-import { BlankComponent } from './blank/blank.component';
-import { SearchComponent } from './search/search.component';
 export const routes: Routes = [
   {
     path: '',
